@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { IoLogOutOutline } from "react-icons/io5";
+import { TbSettingsSearch } from "react-icons/tb";
+import { useRouter } from "next/router";  // Para navegação programática
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();  // Instancia o roteador do Next.js
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleLogout = () => {
+    // Limpa os dados de autenticação (se houver)
+    localStorage.removeItem("user"); // Se você tiver guardado os dados do usuário no localStorage
+    router.push("/"); // Redireciona para a página inicial
   };
 
   useEffect(() => {
@@ -14,19 +24,13 @@ export default function Home() {
       document.body.classList.add("dark-mode");
     }
 
-    async function fetchFrases() {
-      try {
-        const frases = [
-          "Bem-vindo ao EcoProf!",
-          "Explore o conteúdo de várias áreas do conhecimento!",
-        ];
-        startTypingAnimation(frases);
-      } catch (error) {
-        console.error("Erro ao buscar as frases:", error);
-      }
-    }
+    const frases = [
+      "Bem-vindo ao EcoProf!",
+      "Explore o conteúdo de várias áreas do conhecimento!",
+    ];
+    startTypingAnimation(frases);
 
-    async function startTypingAnimation(frases) {
+    function startTypingAnimation(frases) {
       const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
       let i = 0;
       const typingEl = document.getElementById("typing-text");
@@ -38,7 +42,7 @@ export default function Home() {
             i++;
             setTimeout(type, 100);
           } else {
-            setTimeout(() => callback(), 3500);
+            setTimeout(() => callback(), 3000);
           }
         }
         type();
@@ -51,7 +55,7 @@ export default function Home() {
           if (i >= 0) {
             typingEl.textContent = text.substring(0, i);
             i--;
-            setTimeout(erase, 100);
+            setTimeout(erase, 50);
           } else {
             callback();
           }
@@ -82,32 +86,70 @@ export default function Home() {
         });
       });
     }
-
-    fetchFrases();
   }, []);
 
-  return (
-    <div className="bg-white text-gray-800 min-h-screen transition-all duration-300">
-      <div
-        id="sidebar"
-        className={`fixed top-0 right-[-260px] w-[250px] h-full bg-[#f5f5f5] shadow-lg transition-all duration-300 z-10 p-6 text-left ${sidebarOpen ? 'right-0' : ''}`}
-      >
-        <h2 className="text-xl mb-5 text-[#546c4a]">Menu</h2>
-        <Link href="/denuncia-ambiental" className="block py-2 text-lg font-bold text-gray-800 hover:text-green-600">
-          Canais de denúncia
-        </Link>
-      </div>
+  const botoes = [
+    { href: "/matematica", label: "Matemática", img: "matematica-unscreen.gif" },
+    { href: "/portugues", label: "Português", img: "portugues.gif" },
+    { href: "/fisica", label: "Física", img: "fisica.gif" },
+    { href: "/quimica", label: "Química", img: "quimica.gif" },
+    { href: "/biologia", label: "Biologia", img: "dna-unscreen.gif" },
+    { href: "/historia", label: "História", img: "historia.gif" },
+    { href: "/geografia", label: "Geografia", img: "Geografia.gif" },
+    { href: "/filosofia", label: "Filosofia", img: "filodofia.gif" },
+    { href: "/sociologia", label: "Sociologia", img: "dociologia.gif" },
+    { href: "/ingles", label: "Inglês", img: "ingles.gif" },
+  ];
 
+  return (
+    <div className="bg-white text-gray-800 min-h-screen relative overflow-x-hidden">
+      {/* Botão menu ☰ / ✕ */}
       <button
-        id="menu-btn"
-        className="fixed top-5 right-5 text-3xl z-20 text-[#546c4a] focus:outline-none"
         onClick={toggleSidebar}
+        className={`fixed top-4 left-4 z-50 text-3xl text-[#546c4a] focus:outline-none transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-[260px]' : ''}`}
       >
-        ⋮
+        {sidebarOpen ? "✕" : "☰"}
       </button>
 
+      {/* Gaveta lateral esquerda */}
+      <div
+        className={`fixed top-0 left-0 h-full w-[260px] bg-[#546c4a] text-white p-6 shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } rounded-r-lg`}
+      >
+        <h2 className="text-xl font-bold mb-6">Menu</h2>
+
+        <Link
+          href="/denuncia-ambiental"
+          className="block py-2 mb-4 text-lg font-semibold hover:text-green-200 transition-colors"
+        >
+          Canais de denúncia
+        </Link>
+
+        <Link
+          href="/configuracao"
+          className="flex items-center gap-2 w-full py-2 mb-4 hover:text-green-200 transition-colors"
+        >
+          <TbSettingsSearch size={20} />
+          <span>Configurações</span>
+        </Link>
+
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 w-full py-2 hover:text-red-300 transition-colors"
+        >
+          <IoLogOutOutline size={20} />
+          <span>Sair</span>
+        </button>
+      </div>
+
+      {/* Conteúdo principal */}
       <header className="flex flex-col items-center pt-5">
-        <img src="environment-animate.svg" alt="Animação" className="w-full max-w-[300px] mb-3 transition-opacity duration-1000 banner-svg" />
+        <img
+          src="environment-animate.svg"
+          alt="Animação"
+          className="w-full max-w-[300px] mb-3 transition-opacity duration-1000 banner-svg"
+        />
         <img
           src="https://raw.githubusercontent.com/luanzinho0fc/feira-de-ciencias/refs/heads/main/LogoMakerCa-1745319933968.png"
           alt="Logo EcoProf"
@@ -119,47 +161,17 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 px-5 py-10 max-w-[1000px] mx-auto">
-        <Link href="/matematica" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="matematica-unscreen.gif" alt="Matematica" className="w-15 h-15 mb-2" />
-          Matemática
-        </Link>
-        <Link href="/portugues" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="portugues.gif" alt="Portugues" className="w-15 h-15 mb-2" />
-          Português
-        </Link>
-        <Link href="/fisica" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="fisica.gif" alt="Fisica" className="w-15 h-15 mb-2" />
-          Física
-        </Link>
-        <Link href="/quimica" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="quimica.gif" alt="Quimica" className="w-15 h-15 mb-2" />
-          Química
-        </Link>
-        <Link href="/biologia" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="dna-unscreen.gif" alt="Biologia" className="w-15 h-15 mb-2" />
-          Biologia
-        </Link>
-        <Link href="/historia" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="historia.gif" alt="Historia" className="w-15 h-15 mb-2" />
-          História
-        </Link>
-        <Link href="/geografia" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="Geografia.gif" alt="Geografia" className="w-15 h-15 mb-2" />
-          Geografia
-        </Link>
-        <Link href="/filosofia" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="filodofia.gif" alt="Filosofia" className="w-15 h-15 mb-2" />
-          Filosofia
-        </Link>
-        <Link href="/sociologia" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="dociologia.gif" alt="Sociologia" className="w-15 h-15 mb-2" />
-          Sociologia
-        </Link>
-        <Link href="/ingles" className="btn bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105">
-          <img src="ingles.gif" alt="Ingles" className="w-15 h-15 mb-2" />
-          Inglês
-        </Link>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6 py-12 max-w-[1200px] mx-auto">
+        {botoes.map(({ href, label, img }) => (
+          <Link
+            key={href}
+            href={href}
+            className="flex flex-col items-center justify-center bg-[#546c4a] hover:bg-[#7b9f77] text-white py-4 px-6 rounded-2xl shadow-xl transform transition-all duration-300 hover:scale-110 hover:rotate-1 hover:shadow-2xl"
+          >
+            <img src={img} alt={label} className="w-16 h-16 mb-3" />
+            <span className="text-center font-semibold">{label}</span>
+          </Link>
+        ))}
       </div>
     </div>
   );
