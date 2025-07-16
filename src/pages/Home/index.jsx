@@ -2,20 +2,19 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TbSettingsSearch } from "react-icons/tb";
-import { useRouter } from "next/router";  // Para navegação programática
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const router = useRouter();  // Instancia o roteador do Next.js
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
   const handleLogout = () => {
-    // Limpa os dados de autenticação (se houver)
-    localStorage.removeItem("user"); // Se você tiver guardado os dados do usuário no localStorage
-    router.push("/"); // Redireciona para a página inicial
+    localStorage.removeItem("user");
+    router.push("/");
   };
 
   useEffect(() => {
@@ -89,21 +88,20 @@ export default function Home() {
   }, []);
 
   const botoes = [
-    { href: "/matematica", label: "Matemática", img: "matematica-unscreen.gif" },
-    { href: "/portugues", label: "Português", img: "portugues.gif" },
-    { href: "/fisica", label: "Física", img: "fisica.gif" },
-    { href: "/quimica", label: "Química", img: "quimica.gif" },
-    { href: "/biologia", label: "Biologia", img: "dna-unscreen.gif" },
-    { href: "/historia", label: "História", img: "historia.gif" },
-    { href: "/geografia", label: "Geografia", img: "Geografia.gif" },
-    { href: "/filosofia", label: "Filosofia", img: "filodofia.gif" },
-    { href: "/sociologia", label: "Sociologia", img: "dociologia.gif" },
-    { href: "/ingles", label: "Inglês", img: "ingles.gif" },
+    { href: "/matematica", label: "Matemática", img: "/gifs/matematica-unscreen.gif" },
+    { href: "/portugues", label: "Português", img: "/gifs/portugues.gif" },
+    { href: "/fisica", label: "Física", img: "/gifs/fisica.gif" },
+    { href: "/quimica", label: "Química", img: "/gifs/quimica.gif" },
+    { href: "/biologia", label: "Biologia", img: "/gifs/biologia.gif" },
+    { href: "/historia", label: "História", img: "/gifs/historia.gif" },
+    { href: "/geografia", label: "Geografia", img: "/gifs/Geografia.gif" },
+    { href: "/filosofia", label: "Filosofia", img: "/gifs/filodofia.gif" },
+    { href: "/sociologia", label: "Sociologia", img: "/gifs/dociologia.gif" },
+    { href: "/ingles", label: "Inglês", img: "/gifs/ingles.gif" },
   ];
 
   return (
     <div className="bg-white text-gray-800 min-h-screen relative overflow-x-hidden">
-      {/* Botão menu ☰ / ✕ */}
       <button
         onClick={toggleSidebar}
         className={`fixed top-4 left-4 z-50 text-3xl text-[#546c4a] focus:outline-none transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-[260px]' : ''}`}
@@ -111,7 +109,6 @@ export default function Home() {
         {sidebarOpen ? "✕" : "☰"}
       </button>
 
-      {/* Gaveta lateral esquerda */}
       <div
         className={`fixed top-0 left-0 h-full w-[260px] bg-[#546c4a] text-white p-6 shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -143,15 +140,14 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Conteúdo principal */}
       <header className="flex flex-col items-center pt-5">
         <img
-          src="environment-animate.svg"
+          src="/animacao.svg"
           alt="Animação"
           className="w-full max-w-[300px] mb-3 transition-opacity duration-1000 banner-svg"
         />
         <img
-          src="https://raw.githubusercontent.com/luanzinho0fc/feira-de-ciencias/refs/heads/main/LogoMakerCa-1745319933968.png"
+          src="/logo/logo.png"
           alt="Logo EcoProf"
           className="hidden opacity-0 transition-opacity duration-1000 banner-logo w-full max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
         />
