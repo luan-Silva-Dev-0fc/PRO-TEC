@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { FaHeart, FaRegCommentDots, FaShare, FaReply, FaEllipsisH } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate, MdOndemandVideo } from "react-icons/md";
-import { PiYoutubeLogo } from "react-icons/pi";
 
 export default function Publicacao() {
   const [comentario, setComentario] = useState("");
@@ -11,7 +10,7 @@ export default function Publicacao() {
   const [imagem, setImagem] = useState(null);
   const [video, setVideo] = useState(null);
   const [youtubeLink, setYoutubeLink] = useState("");
-  const [youtubeData, setYoutubeData] = useState(null);  // Armazena as informações do YouTube
+  const [youtubeData, setYoutubeData] = useState(null);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [fotoUsuario, setFotoUsuario] = useState(null);
   const [mostrarInputComentario, setMostrarInputComentario] = useState(false);
@@ -20,7 +19,6 @@ export default function Publicacao() {
   const [menuAberto, setMenuAberto] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
-  // Função para buscar informações do vídeo do YouTube a partir do link
   const fetchYouTubeData = async (link) => {
     const videoId = extractYouTubeID(link);
     if (!videoId) return;
@@ -35,34 +33,31 @@ export default function Publicacao() {
         thumbnail: videoData.thumbnails.high.url,
       });
     } else {
-      setYoutubeData(null);  // Caso o link não seja válido
+      setYoutubeData(null);
     }
   };
 
-  // Verificar se o usuário já existe no localStorage
   useEffect(() => {
     const usuariosData = localStorage.getItem("usuarios");
     const usuarios = usuariosData ? JSON.parse(usuariosData) : [];
 
     if (usuarios.length > 0) {
-      // Definindo o usuário com base no primeiro da lista (simulação)
       const usuario = usuarios[0];
       setNomeUsuario(usuario.nome);
       setFotoUsuario(usuario.foto);
       setUsuarioSalvo(true);
     } else {
-      setModalVisivel(true);  // Se o usuário não estiver salvo, mostra o modal
+      setModalVisivel(true);
     }
   }, []);
 
   const handlePublicar = () => {
     if (!comentario && !imagem && !video && !youtubeLink) return;
 
-    setCarregando(true);  // Ativa o carregamento enquanto a publicação é "enviada"
+    setCarregando(true);
 
     setTimeout(() => {
       setPublicacoes([
-        ...publicacoes,
         {
           nome: nomeUsuario,
           foto: fotoUsuario,
@@ -70,18 +65,19 @@ export default function Publicacao() {
           imagem,
           video,
           youtube: youtubeLink,
-          comentarios: [], 
+          comentarios: [],
           id: Date.now(),
         },
+        ...publicacoes,
       ]);
 
       setComentario("");
       setImagem(null);
       setVideo(null);
       setYoutubeLink("");
-      setYoutubeData(null);  // Reseta os dados do vídeo após a publicação
-      setCarregando(false);  // Desativa o carregamento após a "publicação"
-    }, 2000);  // Simula o tempo de carregamento da publicação
+      setYoutubeData(null);
+      setCarregando(false);
+    }, 2000);
   };
 
   const handleFecharModal = () => {
@@ -132,14 +128,37 @@ export default function Publicacao() {
     return match ? match[1] : "";
   };
 
+  const handleAddComentario = (pubIndex, texto) => {
+    const novasPublicacoes = [...publicacoes];
+    novasPublicacoes[pubIndex].comentarios.push({ texto, respostas: [] });
+    setPublicacoes(novasPublicacoes);
+  };
+
+  const handleAddResposta = (pubIndex, comIndex, texto) => {
+    const novasPublicacoes = [...publicacoes];
+    novasPublicacoes[pubIndex].comentarios[comIndex].respostas.push(texto);
+    setPublicacoes(novasPublicacoes);
+  };
+
   return (
     <div className="bg-white min-h-screen p-4 text-gray-800 relative">
-      {/* Modal de Configuração Inicial */}
+      {/* Fundo com a animação SVG e o nome da matéria */}
+      <div className="relative w-full h-56 mb-10 rounded-3xl overflow-hidden shadow-xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#61a183] to-[#7abf98] opacity-90" />
+        <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#61a183] rounded-full mix-blend-multiply blur-2xl opacity-30 animate-pulse"></div>
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <img src="/animacao.svg" alt="Animação" className="w-32 h-32 animate-bounce" />
+        </div>
+        {/* Nome da matéria dentro do fundo */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-3xl font-bold text-white shadow-md px-6 py-2 rounded-lg bg-[#61a183]">
+          Matemática
+        </div>
+      </div>
+
       {modalVisivel && !usuarioSalvo && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-bold text-[#61a183] mb-4">Configuração de Perfil</h2>
-
             <input
               type="text"
               placeholder="Nome de usuário"
@@ -147,7 +166,6 @@ export default function Publicacao() {
               value={nomeUsuario}
               onChange={(e) => setNomeUsuario(e.target.value)}
             />
-
             <label className="cursor-pointer text-xl mb-4 text-[#61a183] block">
               Adicionar Foto (opcional)
               <input
@@ -157,7 +175,6 @@ export default function Publicacao() {
                 onChange={(e) => setFotoUsuario(URL.createObjectURL(e.target.files[0]))}
               />
             </label>
-
             <button
               onClick={handleFecharModal}
               className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-bold py-2 px-6 rounded-lg transition-all duration-300"
@@ -168,7 +185,6 @@ export default function Publicacao() {
         </div>
       )}
 
-      {/* Interface de publicação */}
       <div className={`${modalVisivel ? "blur-sm" : ""} max-w-2xl mx-auto`}>
         <div className="bg-white border rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 group">
           <h2 className="text-2xl font-bold text-[#61a183] mb-4">Criar publicação</h2>
@@ -181,7 +197,6 @@ export default function Publicacao() {
             onChange={(e) => setComentario(e.target.value)}
           />
 
-          {/* Adicionar YouTube */}
           <div className="mt-4">
             <input
               type="url"
@@ -190,12 +205,11 @@ export default function Publicacao() {
               value={youtubeLink}
               onChange={(e) => {
                 setYoutubeLink(e.target.value);
-                fetchYouTubeData(e.target.value); // Chama a função para buscar dados do vídeo
+                fetchYouTubeData(e.target.value);
               }}
             />
           </div>
 
-          {/* Exibir título e miniatura do YouTube se o link for válido */}
           {youtubeData && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold text-[#61a183]">{youtubeData.title}</h3>
@@ -222,14 +236,12 @@ export default function Publicacao() {
           </button>
         </div>
 
-        {/* Carregamento */}
         {carregando && (
           <div className="flex justify-center items-center mt-4">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#61a183] border-solid"></div>
           </div>
         )}
 
-        {/* Publicações */}
         <div className="mt-10 space-y-6">
           {publicacoes.map((pub, pubIndex) => (
             <div key={pub.id} className="bg-white border rounded-2xl p-4 shadow-md hover:shadow-xl transition-all relative">
@@ -312,7 +324,6 @@ export default function Publicacao() {
   );
 }
 
-// Componente de input de comentário
 function ComentarioInput({ onEnviar, placeholder = "Comentar..." }) {
   const [texto, setTexto] = useState("");
 
