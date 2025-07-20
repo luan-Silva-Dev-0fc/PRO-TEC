@@ -14,8 +14,6 @@ export default function Publicacao() {
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [fotoUsuario, setFotoUsuario] = useState(null);
   const [mostrarInputComentario, setMostrarInputComentario] = useState(false);
-  const [modalVisivel, setModalVisivel] = useState(false);
-  const [usuarioSalvo, setUsuarioSalvo] = useState(false);
   const [menuAberto, setMenuAberto] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
@@ -45,9 +43,6 @@ export default function Publicacao() {
       const usuario = usuarios[0];
       setNomeUsuario(usuario.nome);
       setFotoUsuario(usuario.foto);
-      setUsuarioSalvo(true);
-    } else {
-      setModalVisivel(true);
     }
   }, []);
 
@@ -80,26 +75,6 @@ export default function Publicacao() {
     }, 2000);
   };
 
-  const handleFecharModal = () => {
-    if (nomeUsuario.trim() === "") {
-      alert("O nome é obrigatório!");
-      return;
-    }
-
-    const usuarioData = {
-      nome: nomeUsuario,
-      foto: fotoUsuario,
-    };
-    const usuariosData = localStorage.getItem("usuarios");
-    const usuarios = usuariosData ? JSON.parse(usuariosData) : [];
-
-    usuarios.push(usuarioData);
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-    setModalVisivel(false);
-    setUsuarioSalvo(true);
-  };
-
   const handleDeletarPublicacao = (pubIndex) => {
     setCarregando(true);
 
@@ -113,13 +88,11 @@ export default function Publicacao() {
   };
 
   const handleDenunciarPublicacao = () => {
-    alert("Publicação denunciada!");
-    setMenuAberto(null);
+    window.location.href = "/denuncia";
   };
 
   const handleAjuda = () => {
-    alert("Aguarde, em breve vamos adicionar mais funcionalidades de ajuda.");
-    setMenuAberto(null);
+    window.location.href = "/ajuda";
   };
 
   const extractYouTubeID = (url) => {
@@ -142,50 +115,18 @@ export default function Publicacao() {
 
   return (
     <div className="bg-white min-h-screen p-4 text-gray-800 relative">
-      {/* Fundo com a animação SVG e o nome da matéria */}
       <div className="relative w-full h-56 mb-10 rounded-3xl overflow-hidden shadow-xl">
         <div className="absolute inset-0 bg-gradient-to-r from-[#61a183] to-[#7abf98] opacity-90" />
         <div className="absolute -top-10 -left-10 w-72 h-72 bg-[#61a183] rounded-full mix-blend-multiply blur-2xl opacity-30 animate-pulse"></div>
         <div className="relative z-10 flex items-center justify-center h-full">
           <img src="/animacao.svg" alt="Animação" className="w-32 h-32 animate-bounce" />
         </div>
-        {/* Nome da matéria dentro do fundo */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-3xl font-bold text-white shadow-md px-6 py-2 rounded-lg bg-[#61a183]">
           Matemática
         </div>
       </div>
 
-      {modalVisivel && !usuarioSalvo && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-2xl font-bold text-[#61a183] mb-4">Configuração de Perfil</h2>
-            <input
-              type="text"
-              placeholder="Nome de usuário"
-              className="w-full border border-gray-300 rounded-xl p-3 mb-4 focus:ring-2 focus:ring-[#61a183]"
-              value={nomeUsuario}
-              onChange={(e) => setNomeUsuario(e.target.value)}
-            />
-            <label className="cursor-pointer text-xl mb-4 text-[#61a183] block">
-              Adicionar Foto (opcional)
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => setFotoUsuario(URL.createObjectURL(e.target.files[0]))}
-              />
-            </label>
-            <button
-              onClick={handleFecharModal}
-              className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-bold py-2 px-6 rounded-lg transition-all duration-300"
-            >
-              Próximo
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className={`${modalVisivel ? "blur-sm" : ""} max-w-2xl mx-auto`}>
+      <div className={`${carregando ? "blur-sm" : ""} max-w-2xl mx-auto`}>
         <div className="bg-white border rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 group">
           <h2 className="text-2xl font-bold text-[#61a183] mb-4">Criar publicação</h2>
 

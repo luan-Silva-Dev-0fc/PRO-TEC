@@ -116,7 +116,8 @@ export default function Login() {
             ))}
           </div>
 
-          <div className="mt-10 flex flex-col items-center md:hidden w-full">
+          {/* Seção de cadastro responsiva em TODAS as telas */}
+          <div className="mt-10 flex flex-col items-center w-full">
             <h2 className="text-3xl font-bold text-[#61a183] mb-4 text-center">
               Novo por aqui?
             </h2>
@@ -124,7 +125,7 @@ export default function Login() {
               Crie sua conta e comece a usar o Ecoprof agora mesmo.
             </p>
             <a
-              href="#"
+              href="/cadastro"
               className="px-8 py-4 bg-[#61a183] text-white font-semibold rounded-2xl hover:bg-[#4f8b6b] transition shadow"
             >
               Cadastre-se
@@ -132,7 +133,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Lado direito com SVG animado */}
         <div className="hidden md:flex md:w-1/2 bg-white items-center justify-center relative animate-[slideInRight_0.6s_ease-out]">
           <img
             src="/animado.svg"
