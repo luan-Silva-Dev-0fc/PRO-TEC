@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TbSettingsSearch } from "react-icons/tb";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const router = useRouter();
 
   const toggleSidebar = () => {
@@ -13,79 +14,18 @@ export default function Home() {
   };
 
   const handleLogout = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     router.push("/");
   };
 
-  useEffect(() => {
-    const temaSalvo = localStorage.getItem("tema");
-    if (temaSalvo === "escuro") {
-      document.body.classList.add("dark-mode");
-    }
-
-    const frases = [
-      "Bem-vindo ao EcoProf!",
-      "Explore o conteúdo de várias áreas do conhecimento!",
-    ];
-    startTypingAnimation(frases);
-
-    function startTypingAnimation(frases) {
-      const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
-      let i = 0;
-      const typingEl = document.getElementById("typing-text");
-
-      function typeText(text, callback) {
-        function type() {
-          if (i <= text.length) {
-            typingEl.textContent = text.substring(0, i);
-            i++;
-            setTimeout(type, 100);
-          } else {
-            setTimeout(() => callback(), 3000);
-          }
-        }
-        type();
-      }
-
-      function eraseText(callback) {
-        let text = typingEl.textContent;
-        let i = text.length;
-        function erase() {
-          if (i >= 0) {
-            typingEl.textContent = text.substring(0, i);
-            i--;
-            setTimeout(erase, 50);
-          } else {
-            callback();
-          }
-        }
-        erase();
-      }
-
-      typeText(fraseAleatoria, () => {
-        eraseText(() => {
-          const bannerSvg = document.querySelector(".banner-svg");
-          if (bannerSvg) {
-            bannerSvg.style.opacity = "0";
-            setTimeout(() => {
-              bannerSvg.style.display = "none";
-              const bannerLogo = document.querySelector(".banner-logo");
-              if (bannerLogo) {
-                bannerLogo.style.display = "block";
-                bannerLogo.style.opacity = "1";
-                typeText("Bem-vindo ao EcoProf", () => {
-                  const dot = document.querySelector(".dot");
-                  if (dot) {
-                    dot.style.display = "none";
-                  }
-                });
-              }
-            }, 1000);
-          }
-        });
-      });
-    }
-  }, []);
+  const cancelLogout = () => {
+    setIsLogoutModalOpen(false);
+  };
 
   const botoes = [
     { href: "/matematica", label: "Matemática", img: "/gifs/matematica-unscreen.gif" },
@@ -104,21 +44,19 @@ export default function Home() {
     <div className="bg-white text-gray-800 min-h-screen relative overflow-x-hidden">
       <button
         onClick={toggleSidebar}
-        className={`fixed top-4 left-4 z-50 text-3xl text-[#546c4a] focus:outline-none transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-[260px]' : ''}`}
+        className={`fixed top-4 left-4 z-50 text-3xl text-[#546c4a] focus:outline-none transition-all duration-300 ease-in-out ${sidebarOpen ? "translate-x-[260px]" : ""}`}
       >
         {sidebarOpen ? "✕" : "☰"}
       </button>
 
       <div
-        className={`fixed top-0 left-0 h-full w-[260px] bg-[#546c4a] text-white p-6 shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } rounded-r-lg`}
+        className={`fixed top-0 left-0 h-full w-[260px] bg-[#546c4a] text-white p-6 shadow-lg z-40 transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} rounded-r-lg`}
       >
         <h2 className="text-xl font-bold mb-6">Menu</h2>
 
         <Link
-          href="/denuncia-ambiental"
-          className="block py-2 mb-4 text-lg font-semibold hover:text-green-200 transition-colors"
+          href="/denuncia"
+          className="flex items-center justify-center gap-2 py-3 mb-4 text-white font-semibold text-lg bg-[#546c4a] border-2 border-[#7b9f77] hover:bg-[#7b9f77] hover:border-[#546c4a] rounded-lg transition-all duration-300"
         >
           Canais de denúncia
         </Link>
@@ -144,17 +82,13 @@ export default function Home() {
         <img
           src="/animacao.svg"
           alt="Animação"
-          className="w-full max-w-[300px] mb-3 transition-opacity duration-1000 banner-svg"
+          className="w-full max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] mb-3 transition-opacity duration-1000 banner-svg"
         />
         <img
           src="/logo/logo.png"
           alt="Logo EcoProf"
-          className="hidden opacity-0 transition-opacity duration-1000 banner-logo w-full max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px]"
+          className="hidden opacity-0 transition-opacity duration-1000 banner-logo w-full max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px]"
         />
-        <div className="flex items-center justify-center gap-2 mt-2 min-h-[30px] text-2xl font-bold text-[#546c4a]">
-          <span id="typing-text"></span>
-          <div className="w-2.5 h-2.5 rounded-full bg-[#546c4a] animate-blinkDot dot"></div>
-        </div>
       </header>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6 py-12 max-w-[1200px] mx-auto">
@@ -169,6 +103,28 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      {isLogoutModalOpen && (
+        <div className="fixed inset-0 bg-[#546c4a] bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full sm:w-[400px] md:w-[500px]">
+            <h3 className="text-xl font-semibold text-gray-700 mb-4 text-center">Deseja sair?</h3>
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={confirmLogout}
+                className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
+              >
+                Sim
+              </button>
+              <button
+                onClick={cancelLogout}
+                className="w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-all"
+              >
+                Não
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

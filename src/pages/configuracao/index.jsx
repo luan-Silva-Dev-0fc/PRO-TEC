@@ -1,307 +1,243 @@
-"use client";
+import React, { useState } from 'react';
 
-import { useState } from "react";
-
-export default function ConfiguracoesPage() {
-  const [nomeUsuario, setNomeUsuario] = useState("João Silva");
-  const [emailUsuario, setEmailUsuario] = useState("joao@email.com");
-  const [fotoUsuario, setFotoUsuario] = useState(null);
-  const [novaSenha, setNovaSenha] = useState("");
-  const [novoEmail, setNovoEmail] = useState("");
-  const [novoNome, setNovoNome] = useState("");
-  const [notificacoes, setNotificacoes] = useState(true);
-  const [modalVisivel, setModalVisivel] = useState(false);
-  const [modalExclusaoVisivel, setModalExclusaoVisivel] = useState(false);
-  const [modalEmailVisivel, setModalEmailVisivel] = useState(false);
-  const [modalNomeVisivel, setModalNomeVisivel] = useState(false);
-  const [modalSucesso, setModalSucesso] = useState(false);
+export default function AtualizarUsuario({ usuarioId, fotoAtual, nomeAtual, emailAtual }) {
+  const [nome, setNome] = useState(nomeAtual || '');
+  const [foto, setFoto] = useState(null);
+  const [novaSenha, setNovaSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [fotoPreview, setFotoPreview] = useState(fotoAtual || '');
+  const [mensagem, setMensagem] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleFotoChange = (e) => {
-    setFotoUsuario(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    setFoto(file);
+    setFotoPreview(URL.createObjectURL(file));
   };
 
-  const handleNotificacoesChange = () => {
-    setNotificacoes(!notificacoes);
+  const handleAtualizar = async () => {
+    if (novaSenha && novaSenha !== confirmarSenha) {
+      setMensagem('As senhas não coincidem.');
+      return;
+    }
+
+    const formData = new FormData();
+    if (nome) formData.append('nome', nome);
+    if (novaSenha) formData.append('novaSenha', novaSenha);
+    if (foto) formData.append('foto', foto);
+
+    try {
+      const response = await fetch(`http://localhost:4028/usuario/${usuarioId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMensagem('Usuário atualizado com sucesso!');
+      } else {
+        setMensagem(data.erro);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar usuário:', error);
+      setMensagem('Erro ao atualizar usuário.');
+    }
   };
 
-  const handleAlterarSenha = () => {
-    setModalVisivel(true);
-  };
+  const handleDeletarConta = async () => {
+    if (!window.confirm(`Tem certeza que deseja excluir sua conta?
+    Este processo vai excluir:
+    - Suas publicações
+    - O seu e-mail
+    - Todos os dados serão apagados do banco de dados
+    E não será possível recuperar os dados depois!`)) {
+      return;
+    }
 
-  const handleAlterarEmail = () => {
-    setModalEmailVisivel(true);
-  };
+    setIsDeleting(true);
 
-  const handleAlterarNome = () => {
-    setModalNomeVisivel(true);
-  };
+    try {
+      const response = await fetch(`http://localhost:4028/usuario/${usuarioId}`, {
+        method: 'DELETE',
+      });
 
-  const handleExcluirConta = () => {
-    setModalExclusaoVisivel(true);
-  };
-
-  const handleFecharModal = () => {
-    setModalVisivel(false);
-    setModalExclusaoVisivel(false);
-    setModalEmailVisivel(false);
-    setModalNomeVisivel(false);
-  };
-
-  const handleConfirmarAlteracaoSenha = () => {
-    setModalVisivel(false);
-    setModalSucesso(true);
-  };
-
-  const handleConfirmarAlteracaoEmail = () => {
-    setModalEmailVisivel(false);
-    setModalSucesso(true);
-  };
-
-  const handleConfirmarAlteracaoNome = () => {
-    setNomeUsuario(novoNome);
-    setModalNomeVisivel(false);
-    setModalSucesso(true);
-  };
-
-  const handleConfirmarExclusao = () => {
-    alert("Conta excluída!");
-    setModalExclusaoVisivel(false);
-  };
-
-  const handleIrParaSuporte = () => {
-    window.location.href = "/suporte";
+      if (response.ok) {
+        setMensagem('Conta excluída com sucesso.');
+        // Redireciona ou faz logout automaticamente após excluir a conta
+      } else {
+        setMensagem('Erro ao excluir conta.');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir conta:', error);
+      setMensagem('Erro ao excluir conta.');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center">
-      <div className="w-full max-w-xl bg-white shadow-xl rounded-3xl p-6 border">
-        <h1 className="text-3xl font-semibold text-[#61a183] mb-4 text-center">Configurações</h1>
+    <div style={containerEstilo}>
+      <h2 style={tituloEstilo}>Atualizar Conta</h2>
 
-        {/* Dados de Perfil */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Dados de Perfil</h2>
-          <div className="flex items-center space-x-4 mt-4">
-            {fotoUsuario ? (
-              <img
-                src={fotoUsuario}
-                alt="Foto de Perfil"
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            ) : (
-              <div className="w-20 h-20 rounded-full bg-gray-300" />
-            )}
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFotoChange}
-                className="block w-full text-sm text-gray-500"
-              />
-              <p className="mt-2 text-gray-700">Nome de Usuário: {nomeUsuario}</p>
-              <p className="mt-2 text-gray-700">E-mail: {emailUsuario}</p>
-            </div>
-          </div>
-        </div>
+      {mensagem && <p style={mensagemEstilo}>{mensagem}</p>}
 
-        {/* Alterar Nome */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Alterar Nome</h2>
-          <button
-            onClick={handleAlterarNome}
-            className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-semibold py-3 rounded-xl transition-all mt-4"
-          >
-            Alterar Nome
-          </button>
-        </div>
-
-        {/* Alteração de E-mail */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Alterar E-mail</h2>
-          <button
-            onClick={handleAlterarEmail}
-            className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-semibold py-3 rounded-xl transition-all mt-4"
-          >
-            Alterar E-mail
-          </button>
-        </div>
-
-        {/* Configurações de Notificações */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Notificações</h2>
-          <div className="flex items-center mt-4 space-x-4">
-            <p className="text-gray-700">Ativar notificações:</p>
-            <input
-              type="checkbox"
-              checked={notificacoes}
-              onChange={handleNotificacoesChange}
-              className="w-6 h-6"
-            />
-          </div>
-        </div>
-
-        {/* Alteração de Senha */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Alterar Senha</h2>
-          <button
-            onClick={handleAlterarSenha}
-            className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-semibold py-3 rounded-xl transition-all mt-4"
-          >
-            Alterar Senha
-          </button>
-        </div>
-
-        {/* Botão de Suporte */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Suporte</h2>
-          <button
-            onClick={handleIrParaSuporte}
-            className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-semibold py-3 rounded-xl transition-all mt-4"
-          >
-            Ir para Suporte
-          </button>
-        </div>
-
-        {/* Exclusão de Conta */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[#61a183]">Excluir Conta</h2>
-          <button
-            onClick={handleExcluirConta}
-            className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-xl transition-all mt-4"
-          >
-            Excluir Conta
-          </button>
-        </div>
+      <div style={fotoContainerEstilo}>
+        <img
+          src={fotoPreview || 'https://via.placeholder.com/100'}
+          alt="Foto de perfil"
+          style={fotoEstilo}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFotoChange}
+          style={fotoInputEstilo}
+        />
       </div>
 
-      {/* Modal de Alteração de Nome */}
-      {modalNomeVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-[#61a183] mb-4">Alterar Nome</h2>
-            <input
-              type="text"
-              placeholder="Novo nome"
-              value={novoNome}
-              onChange={(e) => setNovoNome(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-xl mb-4"
-            />
-            <div className="flex justify-between">
-              <button
-                onClick={handleConfirmarAlteracaoNome}
-                className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg mr-2"
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={handleFecharModal}
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <div style={campoEstilo}>
+        <label style={labelEstilo}>Nome:</label>
+        <input
+          type="text"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          placeholder="Digite seu novo nome"
+          style={inputEstilo}
+        />
+      </div>
 
-      {/* Modal de Alteração de Senha */}
-      {modalVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-[#61a183] mb-4">Alterar Senha</h2>
-            <input
-              type="password"
-              placeholder="Nova senha"
-              value={novaSenha}
-              onChange={(e) => setNovaSenha(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-xl mb-4"
-            />
-            <div className="flex justify-between">
-              <button
-                onClick={handleConfirmarAlteracaoSenha}
-                className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg mr-2"
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={handleFecharModal}
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <div style={campoEstilo}>
+        <label style={labelEstilo}>Nova Senha:</label>
+        <input
+          type="password"
+          value={novaSenha}
+          onChange={(e) => setNovaSenha(e.target.value)}
+          placeholder="Digite sua nova senha"
+          style={inputEstilo}
+        />
+      </div>
 
-      {/* Modal de Alteração de E-mail */}
-      {modalEmailVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-[#61a183] mb-4">Alterar E-mail</h2>
-            <input
-              type="email"
-              placeholder="Novo e-mail"
-              value={novoEmail}
-              onChange={(e) => setNovoEmail(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-xl mb-4"
-            />
-            <div className="flex justify-between">
-              <button
-                onClick={handleConfirmarAlteracaoEmail}
-                className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg mr-2"
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={handleFecharModal}
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <div style={campoEstilo}>
+        <label style={labelEstilo}>Confirmar Senha:</label>
+        <input
+          type="password"
+          value={confirmarSenha}
+          onChange={(e) => setConfirmarSenha(e.target.value)}
+          placeholder="Confirme sua nova senha"
+          style={inputEstilo}
+        />
+      </div>
 
-      {/* Modal de Exclusão de Conta */}
-      {modalExclusaoVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-red-500 mb-4">Excluir Conta</h2>
-            <p className="mb-4">Tem certeza de que deseja excluir sua conta? Esta ação é irreversível.</p>
-            <div className="flex justify-between">
-              <button
-                onClick={handleConfirmarExclusao}
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg mr-2"
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={handleFecharModal}
-                className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Sucesso */}
-      {modalSucesso && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-green-500 mb-4">Alteração bem-sucedida!</h2>
-            <p className="mb-4">Suas alterações foram salvas com sucesso.</p>
-            <button
-              onClick={() => setModalSucesso(false)}
-              className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg"
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
+      <div style={acoesEstilo}>
+        <button
+          onClick={handleAtualizar}
+          style={botaoEstilo}
+          disabled={isDeleting}
+        >
+          {isDeleting ? 'Excluindo...' : 'Atualizar'}
+        </button>
+        <button
+          onClick={handleDeletarConta}
+          style={botaoEstiloExcluir}
+          disabled={isDeleting}
+        >
+          {isDeleting ? 'Excluindo...' : 'Excluir Conta'}
+        </button>
+      </div>
     </div>
   );
 }
+
+const containerEstilo = {
+  maxWidth: '90%',
+  margin: '20px auto',
+  padding: '20px',
+  backgroundColor: '#fff',
+  borderRadius: '15px',
+  boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const tituloEstilo = {
+  fontSize: '24px',
+  color: '#333',
+  textAlign: 'center',
+  marginBottom: '20px',
+};
+
+const campoEstilo = {
+  marginBottom: '20px',
+};
+
+const labelEstilo = {
+  fontSize: '16px',
+  color: '#333',
+  marginBottom: '5px',
+  fontWeight: '600',
+};
+
+const inputEstilo = {
+  padding: '12px',
+  borderRadius: '8px',
+  border: '1px solid #ddd',
+  width: '100%',
+  fontSize: '16px',
+  backgroundColor: '#f9f9f9',
+  color: '#333',
+};
+
+const fotoContainerEstilo = {
+  display: 'flex',
+  justifyContent: 'center',
+  marginBottom: '20px',
+  alignItems: 'center',
+};
+
+const fotoEstilo = {
+  width: '100px',
+  height: '100px',
+  borderRadius: '50%',
+  objectFit: 'cover',
+  border: '2px solid #ddd',
+  marginRight: '15px',
+};
+
+const fotoInputEstilo = {
+  padding: '8px',
+  backgroundColor: '#61a183',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  width: 'auto',
+};
+
+const acoesEstilo = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: '10px',
+};
+
+const botaoEstilo = {
+  backgroundColor: '#61a183',
+  color: 'white',
+  border: 'none',
+  borderRadius: '10px',
+  padding: '12px 20px',
+  fontSize: '16px',
+  width: '48%',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s',
+};
+
+const botaoEstiloExcluir = {
+  backgroundColor: '#f44336',
+};
+
+const mensagemEstilo = {
+  color: 'red',
+  fontSize: '14px',
+  marginBottom: '10px',
+  textAlign: 'center',
+};

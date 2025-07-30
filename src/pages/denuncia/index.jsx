@@ -1,146 +1,79 @@
-"use client";
+import { FiPhone, FiGlobe } from "react-icons/fi";
 
-import { useState } from "react";
-
-export default function DenunciaPage() {
-  const [motivoSelecionado, setMotivoSelecionado] = useState("");
-  const [detalhes, setDetalhes] = useState("");
-  const [modalVisivel, setModalVisivel] = useState(false);
-  const [modalSucessoVisivel, setModalSucessoVisivel] = useState(false);
-  const [modalErroVisivel, setModalErroVisivel] = useState(false);
-
-  const motivos = [
-    "Conteúdo fora do tema",
-    "Conteúdo impróprio",
-    "Racismo / Homofobia / Preconceito",
-    "Fake news ou desinformação",
-    "Incentivo ao desmatamento",
-    "Discurso de ódio",
-    "Outro",
+export default function CanaisDenuncia() {
+  const canais = [
+    {
+      nome: "Disque Natureza (SEMA – Ceará)",
+      descricao: "Denúncias ambientais em todo o estado do Ceará.",
+      contato: "0800 275 2233",
+      link: "https://www.semace.ce.gov.br/fiscalizacao-ambiental/denuncias/"
+    },
+    {
+      nome: "Semace Mobile (App ou Online)",
+      descricao: "Denúncias pelo aplicativo ou formulário digital.",
+      link: "https://www.semace.ce.gov.br/fiscalizacao-ambiental/denuncias/"
+    },
+    {
+      nome: "Ouvidoria da Semace",
+      descricao: "Atendimento direto ao cidadão para questões ambientais.",
+      contato: "(85) 3101-5520",
+      link: "https://www.ouvidoria.ce.gov.br"
+    },
+    {
+      nome: "DPMA – Delegacia Ambiental",
+      descricao: "Delegacia especializada em crimes ambientais (Fortaleza).",
+      contato: "(85) 3101-7596 | WhatsApp: (85) 98439-9110",
+      link: "https://www.instagram.com/dpma_ce"
+    },
+    {
+      nome: "SEUMA – Prefeitura de Fortaleza",
+      descricao: "Secretaria de Urbanismo e Meio Ambiente.",
+      contato: "(85) 3771-6612",
+      link: "https://urbanismoemeioambiente.fortaleza.ce.gov.br/servicos/311-fale-com-a-seuma"
+    },
+    {
+      nome: "Fiscalize Fortaleza (Agefis)",
+      descricao: "Canal de denúncias da prefeitura.",
+      link: "https://denuncia.agefis.fortaleza.ce.gov.br"
+    }
   ];
 
-  const handleEnviar = () => {
-    if (!motivoSelecionado) {
-      setModalErroVisivel(true); // Exibe modal de erro caso o motivo não seja selecionado
-      return;
-    }
-
-    // Exibe o modal de confirmação
-    setModalVisivel(true);
-  };
-
-  const handleConfirmarEnvio = () => {
-    // Envio da denúncia (pode integrar com API ou banco depois)
-    setModalVisivel(false); // Fecha o modal de confirmação
-    setModalSucessoVisivel(true); // Exibe o modal de sucesso
-
-    // Limpa os campos após o envio
-    setMotivoSelecionado("");
-    setDetalhes("");
-  };
-
-  const handleFecharModal = () => {
-    setModalVisivel(false);
-    setModalErroVisivel(false);
-  };
-
-  const handleFecharModalSucesso = () => {
-    setModalSucessoVisivel(false);
-  };
-
   return (
-    <div className="min-h-screen bg-white p-6 flex flex-col items-center">
-      <div className="w-full max-w-xl bg-white shadow-xl rounded-3xl p-6 border">
-        <h1 className="text-2xl font-bold text-[#61a183] mb-4 text-center">Denunciar Publicação</h1>
-
-        <p className="text-gray-700 mb-4 text-center">Selecione um motivo para a denúncia:</p>
-
-        <div className="space-y-3 mb-6">
-          {motivos.map((motivo, index) => (
-            <button
-              key={index}
-              className={`w-full text-left p-3 rounded-xl border transition-all ${
-                motivoSelecionado === motivo
-                  ? "bg-[#61a183] text-white border-[#61a183]"
-                  : "bg-white border-gray-300 hover:bg-[#f0fdf7]"
-              }`}
-              onClick={() => setMotivoSelecionado(motivo)}
+    <div className="min-h-screen bg-[#f4fdf6] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-6">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-[#546c4a]">🌿 Denúncias Ambientais</h1>
+          <p className="text-sm text-gray-500 mt-2">Canais oficiais do Ceará e Fortaleza</p>
+        </div>
+        <div className="space-y-5 max-h-[70vh] overflow-y-auto custom-scroll">
+          {canais.map((canal, i) => (
+            <div
+              key={i}
+              className="bg-[#f8fcf9] rounded-2xl p-4 border border-[#cfe7d6] shadow-sm"
             >
-              {motivo}
-            </button>
+              <h2 className="text-base font-semibold text-[#2f4f2f] mb-1">
+                {canal.nome}
+              </h2>
+              <p className="text-sm text-gray-700">{canal.descricao}</p>
+              {canal.contato && (
+                <p className="flex items-center text-sm mt-2 text-[#3d5c3d]">
+                  <FiPhone className="mr-1" />
+                  {canal.contato}
+                </p>
+              )}
+              <a
+                href={canal.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center justify-center w-full bg-[#546c4a] text-white text-sm font-medium py-2 px-4 rounded-xl transition hover:bg-[#3e5237] active:scale-95"
+              >
+                <FiGlobe className="mr-2" />
+                Acessar Canal
+              </a>
+            </div>
           ))}
         </div>
-
-        <textarea
-          placeholder="Adicione mais detalhes (opcional)..."
-          className="w-full h-32 p-3 border border-gray-300 rounded-xl mb-6 resize-none focus:ring-2 focus:ring-[#61a183] outline-none"
-          value={detalhes}
-          onChange={(e) => setDetalhes(e.target.value)}
-        />
-
-        <button
-          onClick={handleEnviar}
-          className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white font-bold py-3 rounded-xl transition-all"
-        >
-          Enviar Denúncia
-        </button>
       </div>
-
-      {/* Modal de Confirmação */}
-      {modalVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-[#61a183] mb-4">Confirmação</h2>
-            <p className="mb-4">Tem certeza de que deseja enviar a denúncia?</p>
-            <div className="flex justify-between">
-              <button
-                onClick={handleConfirmarEnvio}
-                className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg mr-2"
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={handleFecharModal}
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Erro (Caso o motivo não seja selecionado) */}
-      {modalErroVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-red-500 mb-4">Erro</h2>
-            <p className="mb-4">Por favor, selecione um motivo para a denúncia antes de enviar.</p>
-            <button
-              onClick={handleFecharModal}
-              className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Sucesso */}
-      {modalSucessoVisivel && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-green-500 mb-4">Sucesso!</h2>
-            <p className="mb-4">Sua denúncia foi registrada com sucesso. Obrigado!</p>
-            <button
-              onClick={handleFecharModalSucesso}
-              className="w-full bg-[#61a183] hover:bg-[#4c866a] text-white py-2 rounded-lg"
-            >
-              Fechar
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
