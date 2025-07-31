@@ -39,7 +39,7 @@ export default function Cadastro() {
     if (foto) formData.append('foto', foto);
 
     try {
-      const response = await axios.post('http://localhost:4028/usuario/cadastro', formData, {
+      const response = await axios.post('https://api-ecoprof-production.up.railway.app/usuario/cadastro', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
