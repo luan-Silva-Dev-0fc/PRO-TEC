@@ -20,7 +20,8 @@ export default function Perfil() {
       return
     }
 
-    axios.get('http://localhost:4028/perfil', {
+    // Substituindo URL para o link da API no Railway
+    axios.get('https://api-ecoprof-production.up.railway.app/perfil', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -52,7 +53,8 @@ export default function Perfil() {
     formData.append('senha', senha)
     if (foto) formData.append('foto', foto)
 
-    axios.put('http://localhost:4028/atualizar-perfil', formData, {
+    // Substituindo URL para o link da API no Railway
+    axios.put('https://api-ecoprof-production.up.railway.app/atualizar-perfil', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
@@ -75,7 +77,8 @@ export default function Perfil() {
       return
     }
 
-    axios.delete('http://localhost:4028/destruir-perfil', {
+    // Substituindo URL para o link da API no Railway
+    axios.delete('https://api-ecoprof-production.up.railway.app/destruir-perfil', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -120,7 +123,7 @@ export default function Perfil() {
       <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm text-center relative">
         <div className="relative inline-block">
           <img
-            src={foto ? URL.createObjectURL(foto) : `http://localhost:4028${perfil.foto}`}
+            src={foto ? URL.createObjectURL(foto) : `https://api-ecoprof-production.up.railway.app${perfil.foto}`}
             alt="Foto do usuário"
             className="w-32 h-32 rounded-full object-cover mx-auto border-4 border-[#546c4a]"
           />

@@ -24,7 +24,7 @@ export default function LinkPage() {
   // Função para buscar o perfil do usuário com o token JWT
   async function buscarPerfil(t) {
     try {
-      const response = await axios.get('http://localhost:4028/perfil', {
+      const response = await axios.get('https://api-ecoprof-production.up.railway.app/perfil', {  // Link atualizado para a API no Railway
         headers: {
           Authorization: `Bearer ${t}`, // Envia o TokenJWT no cabeçalho
         },
@@ -44,7 +44,7 @@ export default function LinkPage() {
   // Função para buscar os links com o token JWT
   async function buscarLinks(t) {
     try {
-      const response = await axios.get('http://localhost:4028/link', {
+      const response = await axios.get('https://api-ecoprof-production.up.railway.app/link', {  // Link atualizado para a API no Railway
         headers: {
           Authorization: `Bearer ${t}`, // Envia o TokenJWT no cabeçalho
         },
@@ -61,7 +61,7 @@ export default function LinkPage() {
 
     try {
       const res = await axios.post(
-        'http://localhost:4028/link',
+        'https://api-ecoprof-production.up.railway.app/link',  // Link atualizado para a API no Railway
         { arquivoUrl: novoLink },
         {
           headers: {
@@ -82,7 +82,7 @@ export default function LinkPage() {
   // Função para deletar um link com o token JWT
   async function deletarLink(id) {
     try {
-      const res = await axios.delete(`http://localhost:4028/link/${id}`, {
+      const res = await axios.delete(`https://api-ecoprof-production.up.railway.app/link/${id}`, {  // Link atualizado para a API no Railway
         headers: {
           Authorization: `Bearer ${token}`, // Envia o TokenJWT no cabeçalho
         },

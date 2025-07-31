@@ -10,7 +10,8 @@ export default function Home() {
     const token = localStorage.getItem('token')
     if (!token) return
 
-    axios.get('http://localhost:4028/usuario/10', {
+    // Atualizando a URL para o link da API no Railway
+    axios.get('https://api-ecoprof-production.up.railway.app/usuario/10', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setUsuario(res.data))

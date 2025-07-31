@@ -1,7 +1,7 @@
 {
-  "name": "EcoProf - Denúncias Ambientais",
+  "name": "EcoProf",
   "short_name": "EcoProf",
-  "start_url": "/",
+  "start_url": "/?homescreen=true",
   "display": "standalone",
   "background_color": "#546c4a",
   "theme_color": "#546c4a",

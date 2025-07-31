@@ -180,7 +180,7 @@ export default function ListaPublicacoes() {
   const [midiaTelaCheia, setMidiaTelaCheia] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:4028/publicacao')
+    fetch('https://api-ecoprof-production.up.railway.app/publicacao') // Usando o link da API no Railway
       .then(res => res.json())
       .then(data => {
         setPublicacoes(data);
@@ -201,7 +201,7 @@ export default function ListaPublicacoes() {
     formData.append('tipo', tipo);
     if (arquivo) formData.append('arquivo', arquivo);
 
-    fetch('http://localhost:4028/publicacao', {
+    fetch('https://api-ecoprof-production.up.railway.app/publicacao', { // Usando o link da API no Railway
       method: 'POST',
       body: formData,
     })
@@ -237,7 +237,7 @@ export default function ListaPublicacoes() {
         <div key={pub.id} style={publicacaoEstilo}>
           <div style={cabecalhoEstilo}>
             <img
-              src={`http://localhost:4028${pub.Usuario?.foto || '/default-foto.jpg'}`}
+              src={`https://api-ecoprof-production.up.railway.app${pub.Usuario?.foto || '/default-foto.jpg'}`}
               width={40}
               height={40}
               style={{ borderRadius: '50%', marginRight: 10 }}
@@ -250,11 +250,11 @@ export default function ListaPublicacoes() {
 
           {pub.tipo === 'foto' && pub.arquivoUrl && (
             <img
-              src={`http://localhost:4028${pub.arquivoUrl}`}
+              src={`https://api-ecoprof-production.up.railway.app${pub.arquivoUrl}`}
               width="100%"
               style={imagemEstilo}
               alt=""
-              onClick={() => abrirEmTelaCheia('foto', `http://localhost:4028${pub.arquivoUrl}`)}
+              onClick={() => abrirEmTelaCheia('foto', `https://api-ecoprof-production.up.railway.app${pub.arquivoUrl}`)}
             />
           )}
 
@@ -263,9 +263,9 @@ export default function ListaPublicacoes() {
               controls
               width="100%"
               style={imagemEstilo}
-              onClick={() => abrirEmTelaCheia('video', `http://localhost:4028${pub.arquivoUrl}`)}
+              onClick={() => abrirEmTelaCheia('video', `https://api-ecoprof-production.up.railway.app${pub.arquivoUrl}`)}
             >
-              <source src={`http://localhost:4028${pub.arquivoUrl}`} />
+              <source src={`https://api-ecoprof-production.up.railway.app${pub.arquivoUrl}`} />
             </video>
           )}
 

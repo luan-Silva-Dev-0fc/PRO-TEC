@@ -1,6 +1,6 @@
 'use client';
 import Head from 'next/head';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { Particles } from '@tsparticles/react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,7 +13,24 @@ export default function Login() {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false); // Controle do modal de instalação
+  const [deferredPrompt, setDeferredPrompt] = useState(null); // Armazena o evento de instalação
   const router = useRouter();
+
+  useEffect(() => {
+    // Detecta quando o usuário tenta instalar o PWA
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e); // Armazenar o evento de instalação
+      setShowInstallModal(true); // Exibir o modal
+    });
+
+    // Detecta quando o PWA é instalado
+    window.addEventListener('appinstalled', () => {
+      setShowInstallModal(false); // Fecha o modal após a instalação
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +41,10 @@ export default function Login() {
     }
 
     setLoading(true);
+    setIsLoggingIn(true);
 
     try {
-      const response = await axios.post('http://localhost:4028/usuario/login', {
+      const response = await axios.post('https://api-ecoprof-production.up.railway.app/usuario/login', {
         email,
         senha: password
       });
@@ -37,8 +55,9 @@ export default function Login() {
 
       setError('');
       setSuccess('Login bem-sucedido!');
-      
+
       setTimeout(() => {
+        setIsLoggingIn(false);
         router.push('/Home');
       }, 1500);
     } catch (err) {
@@ -48,6 +67,7 @@ export default function Login() {
       } else {
         setError(err.response?.data?.mensagem || 'Erro ao fazer login.');
       }
+      setIsLoggingIn(false);
     } finally {
       setLoading(false);
     }
@@ -80,6 +100,23 @@ export default function Login() {
     }
   };
 
+  // Função para instalar o app
+  const instalarApp = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice
+        .then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Usuário aceitou a instalação do PWA');
+          } else {
+            console.log('Usuário rejeitou a instalação do PWA');
+          }
+          setDeferredPrompt(null);
+          setShowInstallModal(false); // Fecha o modal
+        });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -95,6 +132,7 @@ export default function Login() {
             <h2 className="text-4xl sm:text-5xl font-bold text-[#61a183] mb-6 text-center">Entrar no Ecoprof</h2>
             {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
             {success && <p className="text-green-500 mb-4 text-center">{success}</p>}
+
             <form onSubmit={handleSubmit} className="space-y-6 w-full">
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
@@ -137,16 +175,25 @@ export default function Login() {
               </button>
             </form>
 
+            {isLoggingIn && (
+              <div className="mt-4 text-center text-xl text-[#61a183] font-semibold">
+                <p>Seja bem-vindo ao Ecoprof!</p>
+                <div className="spinner-border text-[#61a183] mt-4" role="status">
+                  <span className="sr-only">Carregando...</span>
+                </div>
+              </div>
+            )}
+
             <div className="mt-10 flex flex-col items-center w-full">
-              <h2 className="text-3xl font-bold text-[#61a183] mb-4 text-center">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#61a183] mb-4 text-center">
                 Novo por aqui?
               </h2>
-              <p className="mb-6 text-center">
+              <p className="mb-6 text-center text-lg sm:text-xl">
                 Crie sua conta e comece a usar o Ecoprof agora mesmo.
               </p>
               <a
                 href="/cadastro"
-                className="px-8 py-4 bg-[#61a183] text-white font-semibold rounded-2xl hover:bg-[#4f8b6b] transition shadow"
+                className="px-8 py-4 bg-[#61a183] text-white font-semibold rounded-2xl hover:bg-[#4f8b6b] transition shadow-md"
               >
                 Cadastre-se
               </a>
@@ -162,6 +209,67 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      {showInstallModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: '#fff',
+              padding: 20,
+              borderRadius: 8,
+              width: '80%',
+              maxWidth: 400,
+              textAlign: 'center',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <h2 style={{ marginBottom: 20 }}>Deseja instalar o EcoProf?</h2>
+            <p style={{ marginBottom: 20 }}>Adicione o EcoProf para acessar facilmente!</p>
+            <button
+              onClick={instalarApp}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#546c4a',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                cursor: 'pointer',
+                fontSize: 16,
+              }}
+            >
+              Instalar
+            </button>
+            <button
+              onClick={() => setShowInstallModal(false)}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#ccc',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                cursor: 'pointer',
+                fontSize: 16,
+                marginTop: 10,
+              }}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
