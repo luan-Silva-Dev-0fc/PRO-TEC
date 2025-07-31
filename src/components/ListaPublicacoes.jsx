@@ -196,6 +196,8 @@ export default function ListaPublicacoes() {
   };
 
   const handlePublicar = () => {
+    const token = localStorage.getItem('token'); // Pegue o token do localStorage
+
     const formData = new FormData();
     formData.append('conteudo', conteudo);
     formData.append('tipo', tipo);
@@ -203,6 +205,9 @@ export default function ListaPublicacoes() {
 
     fetch('https://api-ecoprof-production.up.railway.app/publicacao', { // Usando o link da API no Railway
       method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}` // Enviando o token no cabeçalho
+      },
       body: formData,
     })
       .then(res => res.json())
