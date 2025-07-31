@@ -11,7 +11,7 @@ export default function Home() {
     if (!token) return
 
     // Atualizando a URL para o link da API no Railway
-    axios.get('https://api-ecoprof-production.up.railway.app/usuario/10', {
+    axios.get('https://api-ecoprof-production.up.railway.app/usuario/13', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setUsuario(res.data))
