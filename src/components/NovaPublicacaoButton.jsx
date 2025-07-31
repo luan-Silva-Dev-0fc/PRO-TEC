@@ -30,7 +30,7 @@ export default function NovaPublicacaoButton({ usuario }) {
     formData.append('usuarioId', usuario.id)
     formData.append('arquivo', arquivo)
 
-    const res = await fetch('http://localhost:4028/publicacao', {
+    const res = await fetch('https://api-ecoprof-production.up.railway.app/publicacao', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}` // <-- envia o token no header
