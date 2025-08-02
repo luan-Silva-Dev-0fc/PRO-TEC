@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Particles } from '@tsparticles/react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from 'next/router';
+import useAuthRedirect from '../hooks/useAuthRedirect';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,21 +15,20 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [showInstallModal, setShowInstallModal] = useState(false); // Controle do modal de instalação
-  const [deferredPrompt, setDeferredPrompt] = useState(null); // Armazena o evento de instalação
+  const [showInstallModal, setShowInstallModal] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const router = useRouter();
 
+  useAuthRedirect();
   useEffect(() => {
-    // Detecta quando o usuário tenta instalar o PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
-      setDeferredPrompt(e); // Armazenar o evento de instalação
-      setShowInstallModal(true); // Exibir o modal
+      setDeferredPrompt(e);
+      setShowInstallModal(true);
     });
 
-    // Detecta quando o PWA é instalado
     window.addEventListener('appinstalled', () => {
-      setShowInstallModal(false); // Fecha o modal após a instalação
+      setShowInstallModal(false);
     });
   }, []);
 
@@ -100,7 +100,6 @@ export default function Login() {
     }
   };
 
-  // Função para instalar o app
   const instalarApp = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -112,7 +111,7 @@ export default function Login() {
             console.log('Usuário rejeitou a instalação do PWA');
           }
           setDeferredPrompt(null);
-          setShowInstallModal(false); // Fecha o modal
+          setShowInstallModal(false);
         });
     }
   };

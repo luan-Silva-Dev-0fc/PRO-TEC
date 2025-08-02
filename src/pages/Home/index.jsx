@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TbSettingsSearch } from "react-icons/tb";
@@ -8,6 +8,13 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/"); // Redireciona para a tela de login se não estiver autenticado
+    }
+  }, [router]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
