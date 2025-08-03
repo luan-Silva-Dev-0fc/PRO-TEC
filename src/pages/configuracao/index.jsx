@@ -10,32 +10,39 @@ export default function Perfil() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [foto, setFoto] = useState(null)
+  const [modal, setModal] = useState(null) // null | 'confirm' | 'loading' | 'success'
   const router = useRouter()
   const inputRef = useRef(null)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    if (!token) return setErro('Token não encontrado')
+    if (!token) return setErro('Você precisa estar logado para acessar o perfil.')
 
     axios.get('https://api-ecoprof-production.up.railway.app/perfil', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
         setPerfil(res.data)
-        setNome(res.data.nome)
-        setEmail(res.data.email)
+        setNome(res.data.nome || '')
+        setEmail(res.data.email || '')
       })
       .catch(() => setErro('Erro ao buscar perfil'))
   }, [])
 
   const handleUpdate = (e) => {
     e.preventDefault()
+    if (!nome || !email || !senha) {
+      setErro('Preencha todos os campos obrigatórios.')
+      return
+    }
+    setModal('confirm')
+  }
+
+  const confirmarAtualizacao = () => {
     const token = localStorage.getItem('token')
     if (!token) return setErro('Token não encontrado')
 
-    if (!nome || !email || !senha) return setErro('Preencha todos os campos obrigatórios.')
-
-    if (!confirm('Tem certeza que deseja atualizar seu perfil?')) return
+    setModal('loading')
 
     const formData = new FormData()
     formData.append('nome', nome)
@@ -49,51 +56,28 @@ export default function Perfil() {
         'Content-Type': 'multipart/form-data'
       }
     })
-      .then(() => router.push('/perfil'))
-      .catch(() => setErro('Erro ao atualizar perfil'))
-  }
-
-  const handleDelete = () => {
-    const token = localStorage.getItem('token')
-    if (!token) return setErro('Token não encontrado')
-
-    if (!confirm('Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.')) return
-
-    axios.delete('https://api-ecoprof-production.up.railway.app/destruir-perfil', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
       .then(() => {
-        localStorage.removeItem('token')
-        router.push('/')
+        setModal('success')
+        setTimeout(() => router.push('/Home'), 2000)
       })
-      .catch(() => setErro('Erro ao excluir perfil'))
+      .catch(() => {
+        setErro('Erro ao atualizar perfil')
+        setModal(null)
+      })
   }
 
   const abrirSeletor = () => inputRef.current?.click()
   const aoSelecionarImagem = (e) => setFoto(e.target.files[0])
 
-  if (erro) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-red-600 font-semibold">
-        {erro}
-      </div>
-    )
-  }
-
-  if (!perfil) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-gray-600">
-        Carregando perfil...
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f0f5f2] p-6">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md text-center">
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-[#f0f5f2] p-4 sm:p-6 overflow-hidden">
+      {/* Animação de fundo com gradiente */}
+      <div className="absolute inset-0 animate-gradient bg-gradient-to-br from-[#546c4a] via-[#7a9b67] to-[#cfe5d2] opacity-10 z-0" />
+
+      <div className="relative z-10 bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md text-center">
         <div className="relative w-32 h-32 mx-auto">
           <img
-            src={foto ? URL.createObjectURL(foto) : `https://api-ecoprof-production.up.railway.app${perfil.foto}`}
+            src={foto ? URL.createObjectURL(foto) : `https://api-ecoprof-production.up.railway.app${perfil?.foto}`}
             alt="Foto do usuário"
             className="w-32 h-32 rounded-full object-cover border-4 border-[#546c4a]"
           />
@@ -113,8 +97,8 @@ export default function Perfil() {
           />
         </div>
 
-        <h2 className="mt-4 text-2xl font-bold text-[#546c4a]">{perfil.nome}</h2>
-        <p className="text-gray-500 text-sm mb-6">{perfil.email}</p>
+        <h2 className="mt-4 text-2xl font-bold text-[#546c4a]">{perfil?.nome}</h2>
+        <p className="text-gray-500 text-sm mb-6">{perfil?.email}</p>
 
         <form onSubmit={handleUpdate} className="flex flex-col gap-4 text-left">
           <label className="text-sm font-semibold text-[#546c4a]">Nome</label>
@@ -151,13 +135,74 @@ export default function Perfil() {
             Atualizar Perfil
           </button>
         </form>
+      </div>
 
-        <button
-          onClick={handleDelete}
-          className="mt-6 px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
-        >
-          Excluir Conta
-        </button>
+      {/* Modal de confirmação */}
+      {modal === 'confirm' && (
+        <Modal>
+          <p className="text-lg font-medium mb-4 text-[#546c4a]">
+             tem certeza que você deseja atualizar?
+          </p>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => setModal(null)}
+              className="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-400"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={confirmarAtualizacao}
+              className="px-4 py-2 bg-[#546c4a] text-white rounded-xl hover:bg-[#3c4e38]"
+            >
+              Sim
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal de carregamento */}
+      {modal === 'loading' && (
+        <Modal>
+          <p className="text-lg font-medium text-[#546c4a]">Aguarde um momento enquanto estamos atualizando...</p>
+          <div className="mt-4 w-6 h-6 border-4 border-[#546c4a] border-t-transparent rounded-full animate-spin mx-auto"></div>
+        </Modal>
+      )}
+
+      {/* Modal de sucesso */}
+      {modal === 'success' && (
+        <Modal>
+          <p className="text-lg font-medium text-green-600">Perfil atualizado com sucesso!</p>
+        </Modal>
+      )}
+
+      {erro && (
+        <div className="fixed bottom-4 left-4 bg-red-500 text-white px-4 py-2 rounded-xl shadow-lg z-20">
+          {erro}
+        </div>
+      )}
+
+      {/* Keyframes para animação gradiente */}
+      <style jsx>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 6s ease infinite;
+        }
+      `}</style>
+    </div>
+  )
+}
+
+// Componente Modal
+function Modal({ children }) {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-2xl shadow-lg max-w-sm w-full text-center animate-fadeIn">
+        {children}
       </div>
     </div>
   )
