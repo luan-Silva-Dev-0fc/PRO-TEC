@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+PRO TEC Dedetizadora 🚫🐜
 
-## Getting Started
+Este é um projeto desenvolvido em Next.js
+ para a empresa PRO TEC Dedetizadora, oferecendo uma experiência moderna, rápida e responsiva para clientes que desejam solicitar orçamentos e conhecer mais sobre os serviços.
 
-First, run the development server:
+🚀 Começando
 
-```bash
+Para rodar o projeto em modo de desenvolvimento, use:
+
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Abra http://localhost:3000
+ no navegador para visualizar o site.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+✨ Funcionalidades
 
-## Learn More
+📌 Página institucional moderna com informações sobre os serviços.
 
-To learn more about Next.js, take a look at the following resources:
+📱 Design responsivo adaptado para celulares, tablets e desktops.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+💬 Integração com WhatsApp para orçamentos rápidos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⚡ Animações suaves com Framer Motion.
 
-## Deploy on Vercel
+🖼️ Logo e identidade visual personalizada.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🛡️ Modal automático para incentivar contato do cliente.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+📂 Estrutura
+
+O projeto utiliza a nova arquitetura do Next.js com pasta app/:
+
+app/page.js → Página principal com informações e botão para WhatsApp.
+
+public/logo/ → Pasta com os arquivos de logo e ícones usados no site.
+
+components/ (futuro) → Componentes reutilizáveis da aplicação.
+
+📚 Tecnologias
+
+Next.js 15 – Framework React para renderização moderna.
+
+React 19 – Biblioteca base para interface.
+
+TailwindCSS 4 – Estilização rápida e responsiva.
+
+Framer Motion – Animações fluidas e interativas.
+
+🌐 Deploy
+
+O deploy pode ser feito facilmente usando a Vercel
+, criadora do Next.js, ou em qualquer outro provedor compatível com Node.js.
+
+👉 Esse projeto foi feito para transmitir confiança, segurança e eficiência, mostrando que a PRO TEC Dedetizadora é referência em dedetização e higienização.
