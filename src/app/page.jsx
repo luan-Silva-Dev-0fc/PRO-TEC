@@ -1,19 +1,9 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Head from "next/head";
 
 export default function Home() {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    document.title = "PRO TEC Dedetizadora — Seguro e Eficiente";
-
-    // Modal automático após 5 segundos
-    const timer = setTimeout(() => setModalOpen(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
+ 
   const whatsappLink = (customText) => {
     const phone = "5585991840247";
     const text = encodeURIComponent(
@@ -30,43 +20,43 @@ export default function Home() {
 
   return (
     <>
-      {/* SEO e Metadados */}
-      <Head>
-        <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
-        <meta
-          name="description"
-          content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
-        />
-        <link
-          rel="icon"
-          href="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
-        />
+     <Head>
+  <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
+  <meta
+    name="description"
+    content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
+  />
+  <link
+    rel="icon"
+    href="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+  />
 
-        {/* Open Graph */}
-        <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-        <meta
-          property="og:description"
-          content="Conheça nosso processo de dedetização eficiente e seguro. Atendimento rápido e produtos aprovados."
-        />
-        <meta
-          property="og:image"
-          content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://pro-tec.vercel.app/" />
+  {/* Open Graph */}
+  <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
+  <meta
+    property="og:description"
+    content="Conheça nosso processo de dedetização eficiente e seguro. Atendimento rápido e produtos aprovados."
+  />
+  <meta
+    property="og:image"
+    content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pro-tec.vercel.app/" />
 
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-        <meta
-          name="twitter:description"
-          content="Técnicos qualificados, produtos aprovados e atendimento rápido. Solicite seu orçamento sem compromisso!"
-        />
-        <meta
-          name="twitter:image"
-          content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
-        />
-      </Head>
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
+  <meta
+    name="twitter:description"
+    content="Técnicos qualificados, produtos aprovados e atendimento rápido. Solicite seu orçamento sem compromisso!"
+  />
+  <meta
+    name="twitter:image"
+    content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+  />
+</Head>
+
 
       {/* Conteúdo da página */}
       <div className="min-h-screen flex items-start justify-center bg-black text-white p-9 relative">
