@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Página inicial -->
+  <url>
+    <loc>https://pro-tec.vercel.app/</loc>
+    <lastmod>2025-09-30</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Sobre a empresa -->
+  <url>
+    <loc>https://pro-tec.vercel.app/sobre</loc>
+    <lastmod>2025-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Serviços -->
+  <url>
+    <loc>https://pro-tec.vercel.app/servicos</loc>
+    <lastmod>2025-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contato / Orçamento -->
+  <url>
+    <loc>https://pro-tec.vercel.app/contato</loc>
+    <lastmod>2025-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+</urlset>
