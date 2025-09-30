@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import SEO from "../components/SEO";
+import SEO from "../components/SEO"; // SEO já importado
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,7 +26,13 @@ export default function Home() {
 
   return (
     <>
-      <SEO /> {/* 🔹 SEO importado */}
+      <SEO
+        title="PRO TEC — Dedetizadora | Dedetização eficiente e segura"
+        description="A PRO TEC Dedetizadora oferece serviços profissionais de dedetização, garantindo ambientes mais seguros e livres de pragas urbanas. Atendimento rápido e orçamento sem compromisso."
+        url="https://pro-tec.vercel.app/"
+        image="/logo/logo.jpg"
+        robots="index, follow"
+      />
 
       <div className="min-h-screen flex items-start justify-center bg-black text-white p-9 relative">
         <div className="w-full max-w-[1100px]">
@@ -92,7 +98,7 @@ export default function Home() {
                 </div>
                 <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
                   <h4 className="font-bold mb-2">Limpeza de caixas</h4>
-                  <p className="text-gray-300 text-sm">Limpeza de caixas de gordura e Sabão.</p>
+                  <p className="text-gray-300 text-sm">Limpeza de caixas de gordura e sabão.</p>
                 </div>
               </div>
             </section>
@@ -108,11 +114,11 @@ export default function Home() {
           <section className="mt-10 p-7 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
             <h2 className="text-2xl font-extrabold mb-4">Sobre a PRO TEC</h2>
             <p className="text-gray-300 mb-3 text-sm md:text-base">
-              A <strong>PRO TEC Dedetizadora</strong> atua com responsabilidade e experiência no combate a pragas urbanas. </p>
+              A <strong>PRO TEC Dedetizadora</strong> atua com responsabilidade e experiência no combate a pragas urbanas.
+            </p>
             <p className="text-gray-300 mb-3 text-sm md:text-base">
               Utilizamos produtos aprovados pelos órgãos reguladores e contamos com uma equipe técnica especializada, pronta para oferecer soluções rápidas e eficazes.
-
-Nosso objetivo é garantir ambientes mais saudáveis, seguros e livres de pragas, unindo eficiência, qualidade e respeito ao cliente.
+              Nosso objetivo é garantir ambientes mais saudáveis, seguros e livres de pragas, unindo eficiência, qualidade e respeito ao cliente.
             </p>
             <div className="mt-4">
               <a
