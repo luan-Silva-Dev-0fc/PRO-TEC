@@ -31,34 +31,43 @@ export default function Home() {
 
   return (
     <>
-     <Head>
-  <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
-  <meta
-    name="description"
-    content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
-  />
-  <link rel="icon" href="https://pro-tec.vercel.app/logo/logo.jpg" />
+      {/* SEO e Metadados */}
+      <Head>
+        <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
+        <meta
+          name="description"
+          content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
+        />
+        <link
+          rel="icon"
+          href="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+        />
 
-  {/* Open Graph */}
-  <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-  <meta
-    property="og:description"
-    content="Conheça nosso processo de dedetização eficiente e seguro. Atendimento rápido e produtos aprovados."
-  />
-  <meta property="og:image" content="https://pro-tec.vercel.app/logo/logo.jpg" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://pro-tec.vercel.app/" />
+        {/* Open Graph */}
+        <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
+        <meta
+          property="og:description"
+          content="Conheça nosso processo de dedetização eficiente e seguro. Atendimento rápido e produtos aprovados."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://pro-tec.vercel.app/" />
 
-  {/* Twitter */}
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-  <meta
-    name="twitter:description"
-    content="Técnicos qualificados, produtos aprovados e atendimento rápido. Solicite seu orçamento sem compromisso!"
-  />
-  <meta name="twitter:image" content="https://pro-tec.vercel.app/logo/logo.jpg" />
-</Head>
-
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
+        <meta
+          name="twitter:description"
+          content="Técnicos qualificados, produtos aprovados e atendimento rápido. Solicite seu orçamento sem compromisso!"
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+        />
+      </Head>
 
       {/* Conteúdo da página */}
       <div className="min-h-screen flex items-start justify-center bg-black text-white p-9 relative">
@@ -210,19 +219,18 @@ export default function Home() {
 
         {/* Botão fixo WhatsApp */}
         <a
-  href={whatsappLink()}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="fixed bottom-5 right-5 w-14 h-14 z-50"
->
-  <Image
-    src="/logo/whatsapp.png"
-    alt="WhatsApp PRO TEC"
-    fill
-    style={{ objectFit: "contain" }}
-  />
-</a>
-
+          href={whatsappLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-5 right-5 w-14 h-14 z-50"
+        >
+          <Image
+            src="/logo/whatsapp.png"
+            alt="WhatsApp PRO TEC"
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </a>
 
         {/* Modal */}
         {modalOpen && (
