@@ -33,17 +33,14 @@ export default function Home() {
     <>
       {/* SEO e Metadados */}
       <Head>
-        {/* Título e descrição */}
         <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
         <meta
           name="description"
           content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
         />
-
-        
         <link rel="icon" href="/logo/logo.jpg" />
 
-       
+        {/* Open Graph */}
         <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
         <meta
           property="og:description"
@@ -53,7 +50,7 @@ export default function Home() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://pro-tec.vercel.app/" />
 
-        
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
         <meta
@@ -84,14 +81,14 @@ export default function Home() {
                 </div>
               </div>
             </a>
-            <nav className="flex gap-2">
+            <nav>
               <a
                 href={whatsappLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-[#beda38] to-[#beda38] px-3 py-2 rounded-lg font-extrabold text-black"
+                className="bg-gradient-to-r from-[#beda38] to-[#beda38] px-4 py-2 rounded-lg font-extrabold text-black"
               >
-                Faça seu orçamento
+                Solicitar Orçamento
               </a>
             </nav>
           </header>
@@ -111,121 +108,129 @@ export default function Home() {
                   variants={item}
                   className="text-3xl md:text-4xl font-extrabold mb-2 leading-snug"
                 >
-                  Conheça nosso processo de{" "}
-                  <strong>dedetização eficiente e seguro</strong>
+                  Dedetização <strong>eficiente e segura</strong> para sua casa ou empresa
                 </motion.h1>
 
                 <motion.p
                   variants={item}
                   className="text-gray-300 mb-4 text-sm md:text-base"
                 >
-                  Garantimos resultados duradouros com técnicas profissionais e
-                  produtos aprovados — protegendo sua casa ou empresa com
-                  responsabilidade.
+                  Proteja seu ambiente com técnicas profissionais e produtos
+                  aprovados. Atendimento rápido e garantia de resultados.
                 </motion.p>
               </motion.div>
 
-              <div className="mt-4">
-                <button
-                  onClick={() => setModalOpen(true)}
-                  className="px-4 py-2 mt-3 bg-gradient-to-r from-[#beda38] to-[#beda38] text-black font-extrabold rounded-lg"
-                >
-                  Faça seu orçamento
-                </button>
-              </div>
-
+              {/* Cards de serviços */}
               <div className="mt-6 grid md:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
                   <h4 className="font-bold mb-2">Inspeção</h4>
                   <p className="text-gray-300 text-sm">
-                    Avaliação completa para identificar focos, pragas e pontos
-                    críticos antes do tratamento.
+                    Identificação de pragas, pontos críticos e análise detalhada.
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
                   <h4 className="font-bold mb-2">Aplicação</h4>
                   <p className="text-gray-300 text-sm">
-                    Produtos seguros e técnicas qualificadas para eliminar
-                    pragas com eficiência.
+                    Técnicas avançadas e produtos certificados contra pragas.
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
                   <h4 className="font-bold mb-2">Limpeza de caixas</h4>
                   <p className="text-gray-300 text-sm">
-                    Limpeza e higienização de caixas de gordura, com descarte
-                    responsável dos resíduos.
+                    Higienização de caixas de gordura e descarte correto.
                   </p>
-                </div>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <div className="inline-block px-3 py-1 rounded-full bg-[rgba(255,255,255,0.04)] text-gray-300 font-bold">
-                  Técnicos qualificados
-                </div>
-                <div className="inline-block px-3 py-1 rounded-full bg-[rgba(255,255,255,0.04)] text-gray-300 font-bold">
-                  Produtos aprovados
-                </div>
-                <div className="inline-block px-3 py-1 rounded-full bg-[rgba(255,255,255,0.04)] text-gray-300 font-bold">
-                  Atendimento rápido
                 </div>
               </div>
             </section>
 
             <aside className="p-4 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
-              <div className="flex justify-between items-center">
-                <div className="font-extrabold">Atendimento</div>
-                <div className="text-[12px] text-gray-300">Disponível 7 dias</div>
+              <div className="font-extrabold">Atendimento 7 dias</div>
+              <div className="text-[13px] text-gray-300 mt-2">
+                Gleison Nascimento — PRO TEC
               </div>
-
-              <div className="mt-3">
-                <div className="text-[13px] text-gray-300">
-                  Gleison Nascimento — PRO TEC
-                </div>
-                <div className="text-gray-300 text-sm mt-1">
-                  Orçamento sem compromisso.
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <a
-                  className="px-3 py-2 rounded-lg bg-gradient-to-r from-[#beda38] to-[#beda38] text-black font-extrabold block text-center"
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Solicitar Orçamento
-                </a>
+              <div className="text-gray-300 text-sm mt-1">
+                Orçamento sem compromisso, resposta rápida no WhatsApp.
               </div>
             </aside>
           </main>
 
-          <footer className="mt-5 flex justify-between text-gray-300 text-[13px]">
+          {/* Sobre a Empresa */}
+          <section className="mt-10 p-7 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
+            <h2 className="text-2xl font-extrabold mb-4">Sobre a PRO TEC</h2>
+            <p className="text-gray-300 mb-3 text-sm md:text-base">
+              A <strong>PRO TEC Dedetizadora</strong> atua com responsabilidade e
+              experiência no combate a pragas urbanas. Nosso compromisso é com a
+              segurança da sua família e a proteção do seu patrimônio.
+            </p>
+            <p className="text-gray-300 mb-3 text-sm md:text-base">
+              Utilizamos produtos aprovados pelos órgãos reguladores e contamos
+              com uma equipe técnica especializada, pronta para oferecer soluções
+              rápidas e eficazes.
+            </p>
+            <div className="mt-4">
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gradient-to-r from-[#beda38] to-[#beda38] text-black font-extrabold rounded-lg"
+              >
+                Solicitar Orçamento
+              </a>
+            </div>
+          </section>
+
+          {/* Diferenciais */}
+          <section className="mt-10 grid md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Técnicos qualificados</h4>
+              <p className="text-gray-300 text-sm">
+                Profissionais treinados para cada tipo de ambiente e necessidade.
+              </p>
+            </div>
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Produtos aprovados</h4>
+              <p className="text-gray-300 text-sm">
+                Substâncias regulamentadas e seguras para pessoas e animais.
+              </p>
+            </div>
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Atendimento rápido</h4>
+              <p className="text-gray-300 text-sm">
+                Suporte disponível todos os dias, com agilidade e eficiência.
+              </p>
+            </div>
+          </section>
+
+          {/* Rodapé */}
+          <footer className="mt-10 flex justify-between text-gray-300 text-[13px]">
             <div>© {new Date().getFullYear()} PRO TEC — Dedetizadora</div>
             <div>Telefone: (85) 99184-0247</div>
           </footer>
         </div>
 
+        {/* Botão fixo WhatsApp */}
         <a
-          href={whatsappLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-5 right-5 w-20 h-20 z-50"
-        >
-          <Image
-            src="/logo/whatsapp.png"
-            alt="WhatsApp PRO TEC"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        </a>
+  href={whatsappLink()}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-5 right-5 w-14 h-14 z-50"
+>
+  <Image
+    src="/logo/whatsapp.png"
+    alt="WhatsApp PRO TEC"
+    fill
+    style={{ objectFit: "contain" }}
+  />
+</a>
 
+
+        {/* Modal */}
         {modalOpen && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
             <div className="bg-black p-6 rounded-xl max-w-sm w-full border border-[rgba(255,255,255,0.06)]">
               <h2 className="text-xl font-bold mb-3">Faça seu orçamento!</h2>
               <p className="text-gray-300 mb-4">
-                Clique no botão abaixo e envie uma mensagem no WhatsApp para
-                solicitar seu orçamento.
+                Clique no botão abaixo e fale direto conosco pelo WhatsApp.
               </p>
               <a
                 href={whatsappLink(
