@@ -10,7 +10,7 @@ export default function SEO() {
       />
       <link
         rel="icon"
-        href="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
+        href="\logo-site\protec.jpg"
       />
 
       {/* Open Graph */}
