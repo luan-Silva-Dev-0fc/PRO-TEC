@@ -113,7 +113,7 @@ export default function Home() {
                 </div>
                 <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
                   <h4 className="font-bold mb-2">Limpeza</h4>
-                  <p className="text-gray-300 text-sm">Limpeza de caixa de gordura, caixa de sabão e caixas d'água.</p>
+                  <p className="text-gray-300 text-sm">Limpeza de caixas d'água, caixa de gordura e caixa de sabão.</p>
                 </div>
               </div>
             </section>
