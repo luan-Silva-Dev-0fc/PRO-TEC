@@ -1,14 +1,14 @@
 {
-  "name": "EcoProf",
-  "short_name": "EcoProf",
+  "name": "PRO TEC",
+  "short_name": "PRO TEC",
   "start_url": "/?homescreen=true",
   "display": "standalone",
-  "background_color": "#546c4a",
-  "theme_color": "#546c4a",
+  "background_color": "#beda38",
+  "theme_color": "#beda38",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192x192.png",
+      "src": "/logo/logo.jpg",
       "sizes": "192x192",
       "type": "image/png"
     }

@@ -1,274 +1,282 @@
-'use client';
-import Head from 'next/head';
-import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
-import { Particles } from '@tsparticles/react';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useRouter } from 'next/router';
-import useAuthRedirect from '../hooks/useAuthRedirect';
+"use client";
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [showInstallModal, setShowInstallModal] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const router = useRouter();
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Head from "next/head";
+import SEO from "../components/SEO";
 
-  useAuthRedirect();
-  useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallModal(true);
-    });
+function ButtonOrcamento({ text, link }) {
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative inline-flex items-center px-10 py-3 font-extrabold text-black bg-[#beda38] transform skew-x-[-15deg] shadow-[6px_6px_0_#000] transition-all duration-500 hover:shadow-[10px_10px_0_#000] overflow-hidden"
+    >
+      <span className="block skew-x-[15deg]">{text}</span>
+      <span className="ml-6 relative">
+        <svg
+          width="40"
+          height="28"
+          viewBox="0 0 66 43"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            <path
+              className="one"
+              d="M40.154,3.895 L43.976,0.139 65.692,20.785 65.704,22.199 44.677,42.861 43.976,42.861 40.154,39.107 40.148,38.400 56.994,21.857 57.000,21.150 40.154,4.608 40.148,3.901 Z"
+              fill="#000"
+            />
+            <path
+              className="two"
+              d="M20.154,3.895 L23.976,0.139 45.692,20.785 45.704,22.199 24.677,42.861 23.976,42.861 20.154,39.107 20.148,38.400 36.994,21.857 37.000,21.150 20.154,4.608 20.148,3.901 Z"
+              fill="#000"
+            />
+            <path
+              className="three"
+              d="M0.154,3.895 L3.976,0.139 25.692,20.785 25.704,22.199 4.677,42.861 3.976,42.861 0.154,39.107 0.148,38.400 16.994,21.857 17.000,21.150 0.154,4.608 0.148,3.901 Z"
+              fill="#000"
+            />
+          </g>
+        </svg>
+      </span>
 
-    window.addEventListener('appinstalled', () => {
-      setShowInstallModal(false);
-    });
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError('Preencha todos os campos obrigatórios.');
-      setSuccess('');
-      return;
-    }
-
-    setLoading(true);
-    setIsLoggingIn(true);
-
-    try {
-      const response = await axios.post('https://api-ecoprof-production.up.railway.app/usuario/login', {
-        email,
-        senha: password
-      });
-
-      const { token, usuario } = response.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('usuario', JSON.stringify(usuario));
-
-      setError('');
-      setSuccess('Login bem-sucedido!');
-
-      setTimeout(() => {
-        setIsLoggingIn(false);
-        router.push('/Home');
-      }, 1500);
-    } catch (err) {
-      setSuccess('');
-      if (err.response?.data?.mensagem === 'Senha incorreta') {
-        setError('As informações estão incorretas. Caso não tenha conta, é necessário criar uma.');
-      } else {
-        setError(err.response?.data?.mensagem || 'Erro ao fazer login.');
-      }
-      setIsLoggingIn(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const particlesInit = useCallback(async (engine) => {
-    const { loadFull } = await import('tsparticles');
-    await loadFull(engine);
-  }, []);
-
-  const particlesOptions = {
-    fullScreen: { enable: true, zIndex: -1 },
-    background: { color: { value: "#61a183" } },
-    interactivity: {
-      events: { onHover: { enable: true, mode: 'repulse' }, resize: true },
-    },
-    particles: {
-      shape: {
-        type: 'image',
-        image: {
-          src: 'https://cdn-icons-png.flaticon.com/512/427/427735.png',
-          width: 20,
-          height: 20
+      <style jsx>{`
+        .one {
+          transition: 0.4s;
+          transform: translateX(-60%);
         }
-      },
-      number: { value: 50, density: { enable: true, area: 800 } },
-      size: { value: { min: 10, max: 20 } },
-      move: { enable: true, direction: 'top', speed: { min: 1, max: 3 }, outModes: { default: 'out' } },
-      opacity: { value: { min: 0.4, max: 0.8 } }
+        .two {
+          transition: 0.5s;
+          transform: translateX(-30%);
+        }
+        .three {
+          transition: 0.5s;
+        }
+        a:hover .one {
+          transform: translateX(0%);
+          animation: color_anim 1s infinite 0.6s;
+        }
+        a:hover .two {
+          transform: translateX(0%);
+          animation: color_anim 1s infinite 0.4s;
+        }
+        a:hover .three {
+          animation: color_anim 1s infinite 0.2s;
+        }
+        @keyframes color_anim {
+          0%,
+          100% {
+            fill: #000;
+          }
+          50% {
+            fill: white;
+          }
+        }
+      `}</style>
+    </a>
+  );
+}
+
+export default function Home() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setModalOpen(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then(() => console.log("✅ Service Worker registrado!"))
+          .catch((err) => console.error("Erro ao registrar SW:", err));
+      });
     }
+  }, []);
+
+  const whatsappLink = (customText) => {
+    const phone = "5585991840247";
+    const text = encodeURIComponent(
+      customText ||
+        "Olá! Gostaria de solicitar um orçamento da PRO TEC Dedetizadora."
+    );
+    return `https://wa.me/${phone}?text=${text}`;
   };
 
-  const instalarApp = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice
-        .then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('Usuário aceitou a instalação do PWA');
-          } else {
-            console.log('Usuário rejeitou a instalação do PWA');
-          }
-          setDeferredPrompt(null);
-          setShowInstallModal(false);
-        });
-    }
+  const container = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.4 } },
+  };
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
   return (
     <>
+      {/* ✅ Head corrigido com manifest e theme-color */}
       <Head>
-        <meta name="theme-color" content="#546c4a" />
+        <title>PRO TEC Dedetizadora em Fortaleza | Dedetização Rápida e Segura</title>
+        <meta
+          name="description"
+          content="A PRO TEC Dedetizadora oferece serviços de controle de pragas em Fortaleza: baratas, formigas, cupins, ratos e mais. Atendimento 24h com garantia e produtos certificados. Peça seu orçamento grátis agora!"
+        />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon-192x192.png" />
+        <meta name="theme-color" content="#beda38" />
+        <link rel="icon" href="/logo/navegador.png" />
+        
       </Head>
 
-      <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-white">
-        <Particles init={particlesInit} options={particlesOptions} />
-        <div className="bg-white rounded-4xl shadow-xl max-w-7xl w-full flex flex-col md:flex-row z-10 animate-[fadeIn_0.6s_ease-out] border border-[#d4eadd]">
-          <div className="w-full md:w-1/2 p-8 sm:p-10 lg:p-14 flex flex-col items-center">
-            <h2 className="text-4xl sm:text-5xl font-bold text-[#61a183] mb-6 text-center">Entrar no Ecoprof</h2>
-            {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-            {success && <p className="text-green-500 mb-4 text-center">{success}</p>}
+      {/* ✅ SEO */}
+      <SEO
+        title="PRO TEC Dedetizadora em Fortaleza | Dedetização Rápida e Segura"
+        description="A PRO TEC Dedetizadora oferece serviços de controle de pragas em Fortaleza: baratas, formigas, cupins, ratos e mais. Atendimento 24h com garantia e produtos certificados. Peça seu orçamento grátis agora!"
+        url="https://pro-tec.vercel.app/"
+        image="https://pro-tec.vercel.app/logo/logo.jpg"
+        robots="index, follow"
+      />
 
-            <form onSubmit={handleSubmit} className="space-y-6 w-full">
-              <div>
-                <label className="block text-gray-700 mb-1 font-medium">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="Digite seu email"
-                  className="w-full px-5 py-4 border border-[#61a183]/30 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#61a183] transition"
+      <div className="min-h-screen flex items-start justify-center bg-black text-white p-9 relative">
+        <div className="w-full max-w-[1100px]">
+          {/* ✅ Cabeçalho */}
+          <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+            <a
+              href="#"
+              className="flex items-center gap-3 text-white no-underline"
+            >
+              <div className="w-14 h-14 relative rounded-lg overflow-hidden">
+                <Image
+                  src="/logo/logo.jpg"
+                  alt="Logo PRO TEC"
+                  fill
+                  sizes="(max-width: 768px) 56px, 56px"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
               <div>
-                <label className="block text-gray-700 mb-1 font-medium">
-                  Senha <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Digite sua senha"
-                    className="w-full px-5 py-4 border border-[#61a183]/30 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#61a183] transition"
-                  />
-                  <span
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                  >
-                    {showPassword ? <FaEyeSlash className="w-5 h-5 text-gray-500" /> : <FaEye className="w-5 h-5 text-gray-500" />}
-                  </span>
+                <div className="text-lg font-extrabold">
+                  PRO TEC — Dedetizadora
+                </div>
+                <div className="text-[13px] text-gray-300">
+                  Segurança · Eficiência · Resultados
                 </div>
               </div>
-              <button
-                type="submit"
-                className="w-full bg-[#61a183] text-white py-4 rounded-2xl font-semibold hover:bg-[#4f8b6b] shadow-md transition"
-                disabled={loading}
-              >
-                {loading ? 'Carregando...' : 'Entrar'}
-              </button>
-            </form>
+            </a>
 
-            {isLoggingIn && (
-              <div className="mt-4 text-center text-xl text-[#61a183] font-semibold">
-                <p>Seja bem-vindo ao Ecoprof!</p>
-                <div className="spinner-border text-[#61a183] mt-4" role="status">
-                  <span className="sr-only">Carregando...</span>
+            <nav>
+              <ButtonOrcamento text="Solicitar Orçamento" link={whatsappLink()} />
+            </nav>
+          </header>
+
+          <main className="grid md:grid-cols-[1fr_360px] gap-6 items-center p-7 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)] backdrop-blur-sm">
+            <section>
+              <motion.div variants={container} initial="hidden" animate="show">
+                <motion.div variants={item} className="inline-block px-3 py-2 rounded-full bg-[rgba(255,255,255,0.04)] font-bold text-gray-300 mb-3">
+                  DEDETIZADORA
+                </motion.div>
+
+                <motion.h1 variants={item} className="text-3xl md:text-4xl font-extrabold mb-2 leading-snug">
+                  Dedetização <strong>eficiente e segura</strong> para sua casa ou empresa
+                </motion.h1>
+
+                <motion.p variants={item} className="text-gray-300 mb-4 text-sm md:text-base">
+                  Proteja seu ambiente com técnicas profissionais e produtos aprovados. Atendimento rápido e garantia de resultados.
+                </motion.p>
+              </motion.div>
+
+              <div className="mt-6 grid md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+                  <h4 className="font-bold mb-2">Inspeção</h4>
+                  <p className="text-gray-300 text-sm">Identificação de pragas, pontos críticos e análise detalhada.</p>
+                </div>
+                <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+                  <h4 className="font-bold mb-2">Aplicação</h4>
+                  <p className="text-gray-300 text-sm">Técnicas avançadas e produtos certificados contra pragas.</p>
+                </div>
+                <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+                  <h4 className="font-bold mb-2">Limpeza</h4>
+                  <p className="text-gray-300 text-sm">Limpeza de caixas d'água, caixa de gordura e caixa de sabão.</p>
                 </div>
               </div>
-            )}
+            </section>
 
-            <div className="mt-10 flex flex-col items-center w-full">
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#61a183] mb-4 text-center">
-                Novo por aqui?
-              </h2>
-              <p className="mb-6 text-center text-lg sm:text-xl">
-                Crie sua conta e comece a usar o Ecoprof agora mesmo.
+            <aside className="p-4 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
+              <div className="font-extrabold">Atendimento 7 dias</div>
+              <div className="text-[13px] text-gray-300 mt-2">Gleison Nascimento — PRO TEC</div>
+              <div className="text-gray-300 text-sm mt-1">Orçamento sem compromisso, resposta rápida no WhatsApp.</div>
+            </aside>
+          </main>
+
+          <section className="mt-10 p-7 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
+            <h2 className="text-2xl font-extrabold mb-4">Sobre a PRO TEC</h2>
+            <p className="text-gray-300 mb-3 text-sm md:text-base">
+              A <strong>PRO TEC Dedetizadora</strong> atua com responsabilidade e experiência no combate a pragas urbanas.
+            </p>
+            <p className="text-gray-300 mb-3 text-sm md:text-base">
+              Utilizamos produtos aprovados pelos órgãos reguladores e contamos com uma equipe técnica especializada, pronta para oferecer soluções rápidas e eficazes.
+              Nosso objetivo é garantir ambientes mais saudáveis, seguros e livres de pragas, unindo eficiência, qualidade e respeito ao cliente.
+            </p>
+            <div className="mt-4">
+              <ButtonOrcamento text="Solicitar Orçamento" link={whatsappLink()} />
+            </div>
+          </section>
+
+          <section className="mt-10 grid md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Técnicos qualificados</h4>
+              <p className="text-gray-300 text-sm">Profissionais treinados para cada tipo de ambiente e necessidade.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Produtos aprovados</h4>
+              <p className="text-gray-300 text-sm">Substâncias regulamentadas e seguras para pessoas e animais.</p>
+            </div>
+            <div className="p-4 rounded-lg bg-[rgba(255,255,255,0.04)]">
+              <h4 className="font-bold mb-2">✔ Atendimento rápido</h4>
+              <p className="text-gray-300 text-sm">Suporte disponível todos os dias, com agilidade e eficiência.</p>
+            </div>
+          </section>
+
+          <footer className="mt-10 flex justify-between text-gray-300 text-[13px]">
+            <div>© {new Date().getFullYear()} PRO TEC — Dedetizadora</div>
+            <div>Telefone: (85) 99184-0247</div>
+          </footer>
+        </div>
+
+        <a
+          href={whatsappLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-5 right-5 w-14 h-14 z-50"
+        >
+          <Image src="/logo/whatsapp.png" alt="WhatsApp PRO TEC" fill style={{ objectFit: "contain" }} />
+        </a>
+
+        {modalOpen && (
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+            <div className="bg-black p-6 rounded-xl max-w-sm w-full border border-[rgba(255,255,255,0.06)]">
+              <h2 className="text-xl font-bold mb-3">Faça seu orçamento!</h2>
+              <p className="text-gray-300 mb-4">
+                Clique no botão abaixo e fale direto conosco pelo WhatsApp.
               </p>
-              <a
-                href="/cadastro"
-                className="px-8 py-4 bg-[#61a183] text-white font-semibold rounded-2xl hover:bg-[#4f8b6b] transition shadow-md"
+              <ButtonOrcamento
+                text="Enviar no WhatsApp"
+                link={whatsappLink("Olá! Gostaria de solicitar um orçamento da PRO TEC Dedetizadora.")}
+              />
+              <button
+                onClick={() => setModalOpen(false)}
+                className="block w-full text-center px-4 py-2 border border-[rgba(255,255,255,0.06)] text-[#beda38] font-bold rounded-lg mt-3"
               >
-                Cadastre-se
-              </a>
+                Fechar
+              </button>
             </div>
           </div>
-
-          <div className="hidden md:flex md:w-1/2 bg-white items-center justify-center relative animate-[slideInRight_0.6s_ease-out]">
-            <img
-              src="/animado.svg"
-              alt="Animação"
-              className="w-[80%] h-auto animate-float"
-            />
-          </div>
-        </div>
+        )}
       </div>
-
-      {showInstallModal && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: '#fff',
-              padding: 20,
-              borderRadius: 8,
-              width: '80%',
-              maxWidth: 400,
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            <h2 style={{ marginBottom: 20 }}>Deseja instalar o EcoProf?</h2>
-            <p style={{ marginBottom: 20 }}>Adicione o EcoProf para acessar facilmente!</p>
-            <button
-              onClick={instalarApp}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#546c4a',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 8,
-                cursor: 'pointer',
-                fontSize: 16,
-              }}
-            >
-              Instalar
-            </button>
-            <button
-              onClick={() => setShowInstallModal(false)}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#ccc',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 8,
-                cursor: 'pointer',
-                fontSize: 16,
-                marginTop: 10,
-              }}
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
