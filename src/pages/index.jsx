@@ -119,18 +119,35 @@ export default function Home() {
 
   return (
     <>
-      {/* ✅ Head corrigido com manifest e theme-color */}
-      <Head>
-        <title>PRO TEC Dedetizadora em Fortaleza | Dedetização Rápida e Segura</title>
-        <meta
-          name="description"
-          content="A PRO TEC Dedetizadora oferece serviços de controle de pragas em Fortaleza: baratas, formigas, cupins, ratos e mais. Atendimento 24h com garantia e produtos certificados. Peça seu orçamento grátis agora!"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#beda38" />
-        <link rel="icon" href="/logo/navegador.png" />
-        
-      </Head>
+     {/* ✅ Head corrigido com manifest, theme-color e Google Analytics */}
+<Head>
+  <title>PRO TEC Dedetizadora em Fortaleza | Dedetização Rápida e Segura</title>
+  <meta
+    name="description"
+    content="A PRO TEC Dedetizadora oferece serviços de controle de pragas em Fortaleza: baratas, formigas, cupins, ratos e mais. Atendimento 24h com garantia e produtos certificados. Peça seu orçamento grátis agora!"
+  />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#beda38" />
+  <link rel="icon" href="/logo/navegador.png" />
+
+  {/* ✅ Google Analytics (GA4) */}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9TWTW0ZMH6"></script>
+  <script
+    dangerouslySetInnerHTML={{
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-9TWTW0ZMH6', {
+          send_page_view: true,
+          anonymize_ip: true,
+          debug_mode: false
+        });
+      `,
+    }}
+  />
+</Head>
+
 
       {/* ✅ SEO */}
       <SEO
