@@ -1,42 +1,41 @@
 import Head from "next/head";
 
-export default function SEO() {
+export default function SEO({
+  title = "Dedetizadora em Fortaleza | PRO TEC Dedetização 24h",
+  description = "Dedetizadora em Fortaleza especializada em controle de pragas urbanas. Dedetização contra baratas, ratos e cupins. Atendimento rápido, técnicos qualificados e orçamento grátis pelo WhatsApp.",
+  url = "https://pro-tec.vercel.app/",
+  image = "https://pro-tec.vercel.app/logo/logo.jpg",
+  robots = "index, follow"
+}) {
   return (
     <Head>
-      <title>PRO TEC Dedetizadora — Seguro e Eficiente</title>
-      <meta
-        name="description"
-        content="A PRO TEC Dedetizadora garante segurança e eficiência no combate a pragas urbanas. Atendimento rápido, técnicos qualificados e resultados duradouros."
-      />
-      <link
-        rel="icon"
-        href="\logo-site\protec.jpg"
-      />
+      <title>{title}</title>
 
-      {/* Open Graph */}
-      <meta property="og:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-      <meta
-        property="og:description"
-        content="Conheça nosso processo de dedetização eficiente e seguro. Atendimento rápido e produtos aprovados."
-      />
-      <meta
-        property="og:image"
-        content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
-      />
+      <meta name="description" content={description} />
+      <meta name="robots" content={robots} />
+      <meta name="author" content="PRO TEC Dedetizadora" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <link rel="canonical" href={url} />
+      <link rel="icon" href="/logo/navegador.png" />
+
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={image} />
+      <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://pro-tec.vercel.app/" />
+      <meta property="og:site_name" content="PRO TEC Dedetizadora" />
+      <meta property="og:locale" content="pt_BR" />
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="PRO TEC Dedetizadora — Seguro e Eficiente" />
-      <meta
-        name="twitter:description"
-        content="Técnicos qualificados, produtos aprovados e atendimento rápido. Solicite seu orçamento sem compromisso!"
-      />
-      <meta
-        name="twitter:image"
-        content="https://raw.githubusercontent.com/luan-Silva-Dev-0fc/PRO-TEC/main/public/logo/logo.jpg"
-      />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
+
+      <meta name="geo.region" content="BR-CE" />
+      <meta name="geo.placename" content="Fortaleza" />
+      <meta name="geo.position" content="-3.7319;-38.5267" />
+      <meta name="ICBM" content="-3.7319, -38.5267" />
     </Head>
   );
 }
